@@ -10,8 +10,8 @@ import { homeStats } from '@/lib/data/stats';
 import { getPosts } from '@/lib/supabase/posts';
 
 /* Inline SVG icons — no lucide dependency needed */
-const ArrowRight = ({ size = 18, color = 'currentColor' }: { size?: number; color?: string }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+const ArrowRight = ({ size = 18, color = 'currentColor', strokeWidth = 1.5 }: { size?: number; color?: string; strokeWidth?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M5 12h14M12 5l7 7-7 7" />
   </svg>
 );
