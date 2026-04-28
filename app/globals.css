@@ -1,26 +1,170 @@
+/* ============================================================
+   DRIVLY — Global Styles
+   Order: @import → @theme → base styles → utilities
+   ============================================================ */
+
+/* 1. External font imports MUST come first */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+/* 2. Tailwind v4 */
 @import "tailwindcss";
 
+/* 3. Official plugins */
+@plugin "@tailwindcss/typography";
+
+/* ============================================================
+   DRIVLY DESIGN TOKENS — Tailwind v4 @theme block
+   Extracted precisely from the Figma CSS spec.
+   ============================================================ */
+@theme {
+  /* ── Brand Greens ──────────────────────────────────────── */
+  /* Bottle Green — primary dark green (nav CTA, dark cards) */
+  --color-brand-dark:          #0D3D21;
+  /* Racing Green — near-black (footer, problem section)     */
+  --color-brand-racing:        #0E1510;
+  /* Mid green — hover state for brand-dark                  */
+  --color-brand-mid:           #1B5E35;
+  /* Limeade — action / CTA green                            */
+  --color-brand-action:        #7AB800;
+  /* Olive — section headline text green                     */
+  --color-brand-olive:         #5F9908;
+  /* Hover for action buttons                                */
+  --color-brand-action-hover:  #6BA000;
+  /* Limeade at 15% — light action tint                      */
+  --color-brand-action-light:  #EFF7DB;
+  /* Caper — light border for step badges                    */
+  --color-brand-caper:         #C8E99A;
+  /* Gray Asparagus — body text on light sections            */
+  --color-brand-body:          #4A5E46;
+  /* Axolotl — service card description                      */
+  --color-brand-axolotl:       #4D6147;
+  /* Muted sage — label text & field labels                  */
+  --color-brand-sage:          #8FA489;
+
+  /* ── Surfaces ─────────────────────────────────────────── */
+  /* Loafer — lightest green tint (form inputs, section bg)  */
+  --color-brand-loafer:        #F7FAF2;
+  /* Zanah — card border green                               */
+  --color-brand-zanah:         #D8E8D0;
+  /* Caper card border                                       */
+  --color-brand-card-border:   #D4E8C8;
+
+  /* ── Neutrals ─────────────────────────────────────────── */
+  --color-brand-text-primary:  #111810;
+  --color-brand-text-muted:    #6B7280;
+  --color-brand-text-on-dark:  #FFFFFF;
+  --color-brand-bg-light:      #F7FAF2;
+  --color-brand-border:        #D8E8D0;
+
+  /* ── Typography ───────────────────────────────────────── */
+  --font-sans:    "Inter", "Helvetica Neue", system-ui, -apple-system, sans-serif;
+  --font-poppins: "Poppins", "Helvetica Neue", system-ui, sans-serif;
+}
+
+/* ============================================================
+   BASE STYLES
+   ============================================================ */
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #111810;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Inter", "Helvetica Neue", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+}
+
+/* ============================================================
+   UTILITY CLASSES
+   ============================================================ */
+
+/* Standard section padding */
+.section-pad {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+@media (min-width: 768px) {
+  .section-pad {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+/* Eyebrow pill badge — used across sections */
+.eyebrow-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px;
+  background: rgba(122, 184, 0, 0.15);
+  border: 1px solid rgba(122, 184, 0, 0.3);
+  font-family: "Helvetica Neue", "Inter", sans-serif;
+  font-size: 1.1875rem;
+  line-height: 33px;
+  color: #0D3D21;
+}
+
+/* Poppins button label */
+.btn-label {
+  font-family: "Poppins", "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 24px;
+}
+
+/* Section label (legacy) */
+.section-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #7AB800;
+  margin-bottom: 0.75rem;
+}
+
+/* Prose body text for blog articles */
+.prose-drivly p {
+  margin-bottom: 1.5rem;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: #374151;
+}
+
+.prose-drivly {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.prose-drivly img,
+.prose-drivly video,
+.prose-drivly iframe,
+.prose-drivly table {
+  max-width: 100%;
+}
+
+.prose-drivly pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.prose-drivly code {
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
