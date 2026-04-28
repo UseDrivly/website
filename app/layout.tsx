@@ -83,7 +83,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} h-full scroll-smooth`}>
-      <body className="flex min-h-full flex-col bg-white text-brand-text-primary antialiased">
+      <body className="flex min-h-full flex-col bg-white text-brand-text-primary antialiased overflow-x-hidden">
         <ConditionalLayout>
           {/* Page content — grows to fill viewport */}
           <main className="flex-1" id="main-content" tabIndex={-1}>

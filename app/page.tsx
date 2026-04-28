@@ -145,7 +145,7 @@ export default async function HomePage() {
             {/* Headline */}
             <h1 style={{
               fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700,
-              fontSize: 'clamp(48px, 5vw, 72px)', lineHeight: '75px', letterSpacing: '-2.16px',
+              fontSize: 'clamp(40px, 5vw, 72px)', lineHeight: '1.05', letterSpacing: '-2.16px',
               color: '#FFFFFF',
               marginBottom: '32px',
             }}>
@@ -217,7 +217,7 @@ export default async function HomePage() {
           <div className="flex-1 flex flex-col gap-5 max-w-[521px]">
             <h2 style={{
               fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700,
-              fontSize: 'clamp(40px, 4.5vw, 65px)', lineHeight: '68px', letterSpacing: '-1.97px',
+              fontSize: 'clamp(32px, 4.5vw, 65px)', lineHeight: '1.1', letterSpacing: '-1.97px',
               color: '#FFFFFF',
             }}>
               Every driver fears this moment
@@ -253,7 +253,7 @@ export default async function HomePage() {
           <div className="mt-4 mb-3">
             <h2 style={{
               fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700,
-              fontSize: 'clamp(36px, 5vw, 72px)', lineHeight: '75px', letterSpacing: '-2.16px',
+              fontSize: 'clamp(28px, 5vw, 72px)', lineHeight: '1.1', letterSpacing: '-2.16px',
             }}>
               <span style={{ color: '#111810' }}>Built for drivers</span><br />
               <span style={{ color: '#5F9908' }}>Built for providers</span>
@@ -331,8 +331,8 @@ export default async function HomePage() {
             <h2 style={{
               fontFamily: 'Helvetica Neue, Inter, sans-serif',
               fontWeight: 700,
-              fontSize: 'clamp(36px, 4.5vw, 72px)',
-              lineHeight: '75px',
+              fontSize: 'clamp(28px, 4.5vw, 72px)',
+              lineHeight: '1.1',
               letterSpacing: '-2.16px',
               color: '#5F9908',
               margin: '16px 0 24px',
@@ -373,7 +373,7 @@ export default async function HomePage() {
             <EyebrowPill text="FOR SERVICE PROVIDER" actionColor />
             <h2 style={{
               fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700,
-              fontSize: 'clamp(36px, 4.5vw, 72px)', lineHeight: '75px', letterSpacing: '-2.16px',
+              fontSize: 'clamp(28px, 4.5vw, 72px)', lineHeight: '1.1', letterSpacing: '-2.16px',
               color: '#FFFFFF', margin: '16px 0 24px',
             }}>
               Earn more from<br />your skills
@@ -470,7 +470,7 @@ export default async function HomePage() {
           <EyebrowPill text="JOIN THE WAITLIST" actionColor />
           <h2 style={{
             fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700,
-            fontSize: 'clamp(36px, 5vw, 72px)', lineHeight: '75px', letterSpacing: '-2.16px',
+            fontSize: 'clamp(28px, 5vw, 72px)', lineHeight: '1.1', letterSpacing: '-2.16px',
             color: '#FFFFFF', margin: '16px 0 8px', maxWidth: '627px',
           }}>
             Join the network<br />before we launch
