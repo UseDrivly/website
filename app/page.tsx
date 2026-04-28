@@ -15,8 +15,8 @@ const ArrowRight = ({ size = 18, color = 'currentColor' }: { size?: number; colo
     <path d="M5 12h14M12 5l7 7-7 7" />
   </svg>
 );
-const Check = ({ size = 10, color = 'currentColor' }: { size?: number; color?: string }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+const Check = ({ size = 10, color = 'currentColor', strokeWidth = 2.5 }: { size?: number; color?: string; strokeWidth?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M20 6L9 17l-5-5" />
   </svg>
 );
