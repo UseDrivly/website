@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import 'react-quill-new/dist/quill.snow.css';
@@ -12,18 +12,6 @@ export default function BlogEditor({ initialData, postId }: { initialData?: any,
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  
-  const quillRef = useRef<any>(null);
-
-  const [formData, setFormData] = useState({
-    title: initialData?.title || '',
-    slug: initialData?.slug || '',
-    excerpt: initialData?.excerpt || '',
-    cover_image_url: initialData?.cover_image_url || '',
-    content: initialData?.content || '',
-    category: initialData?.category || '',
-    is_published: initialData?.is_published || false,
-  });
 
   const uploadImage = async (file: File) => {
     const uploadData = new FormData();
@@ -42,47 +30,25 @@ export default function BlogEditor({ initialData, postId }: { initialData?: any,
     return data.url;
   };
 
-  const imageHandler = () => {
-    const input = document.createElement('input');
-    input.setAttribute('type', 'file');
-    input.setAttribute('accept', 'image/*');
-    input.click();
+  const [formData, setFormData] = useState({
+    title: initialData?.title || '',
+    slug: initialData?.slug || '',
+    excerpt: initialData?.excerpt || '',
+    cover_image_url: initialData?.cover_image_url || '',
+    content: initialData?.content || '',
+    category: initialData?.category || '',
+    is_published: initialData?.is_published || false,
+  });
 
-    input.onchange = async () => {
-      const file = input.files ? input.files[0] : null;
-      if (!file) return;
-
-      try {
-        setLoading(true);
-        const imageUrl = await uploadImage(file);
-        
-        // Insert the image URL into the editor
-        if (quillRef.current) {
-          const editor = quillRef.current.getEditor();
-          const range = editor.getSelection();
-          editor.insertEmbed(range ? range.index : 0, 'image', imageUrl);
-        }
-      } catch (err) {
-        setError('Failed to upload image');
-      } finally {
-        setLoading(false);
-      }
-    };
-  };
 
   const modules = useMemo(() => ({
-    toolbar: {
-      container: [
-        [{ 'header': [1, 2, 3, false] }],
-        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-        [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-        ['link', 'image'],
-        ['clean']
-      ],
-      handlers: {
-        image: imageHandler
-      }
-    }
+    toolbar: [
+      [{ 'header': [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+      ['link', 'image'],
+      ['clean']
+    ]
   }), []);
 
   const handleSave = async () => {
@@ -194,7 +160,6 @@ export default function BlogEditor({ initialData, postId }: { initialData?: any,
             <label className="block text-sm font-bold text-[#0D3D21] mb-2">Content</label>
             <div className="bg-white">
               <ReactQuill
-                ref={quillRef}
                 theme="snow"
                 value={formData.content}
                 onChange={(val) => setFormData({ ...formData, content: val })}
