@@ -169,7 +169,7 @@ export default function BusinessesClient({ posts }: { posts: any[] }) {
         <div className="max-w-[1180px] mx-auto px-6 lg:px-12 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
           {/* Left */}
           <div className="flex-1 max-w-[506px]">
-            <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 72px)', lineHeight: '1.04', letterSpacing: '-2.16px', marginBottom: '24px' }}>
+            <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 70px)', lineHeight: '1.04', letterSpacing: '-2.16px', marginBottom: '24px' }}>
               <span style={{ color: '#5F9908' }}>We Take Over</span><br />
               <span style={{ color: '#5F9908' }}>When</span> <span style={{ color: '#0D3D21' }}>Things</span><br />
               <span style={{ color: '#0D3D21' }}>Go Wrong</span>
