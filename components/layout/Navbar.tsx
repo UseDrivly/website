@@ -100,6 +100,7 @@ export default function Navbar() {
             <Link
               href="/#waitlist"
               id="navbar-cta"
+              className="transition-opacity duration-200 hover:opacity-90"
               style={{
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                 width: '149px', height: '48px',

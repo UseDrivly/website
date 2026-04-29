@@ -37,6 +37,15 @@ export default function WaitlistTabForm({ id }: WaitlistTabFormProps) {
     const formData = new FormData(form);
     formData.set('role', role);
 
+    if (role === 'provider') {
+      const serviceType = String(formData.get('service_type') ?? '').trim();
+      if (!serviceType) {
+        setStatus('error');
+        setMessage('Service type is required for providers.');
+        return;
+      }
+    }
+
     startTransition(async () => {
       const result = await submitWaitlist(formData);
       if (result.success) {
@@ -61,6 +70,7 @@ export default function WaitlistTabForm({ id }: WaitlistTabFormProps) {
         letterSpacing: '0.88px',
         color: '#8FA489',
         marginBottom: '4px',
+        textAlign: 'left',
       }}
     >
       {text}
@@ -155,7 +165,7 @@ export default function WaitlistTabForm({ id }: WaitlistTabFormProps) {
       </div>
 
       {/* Form body */}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={{ textAlign: 'left' }}>
         {/* Title + subtitle */}
         <div style={{ marginBottom: '24px' }}>
           <p
@@ -209,6 +219,18 @@ export default function WaitlistTabForm({ id }: WaitlistTabFormProps) {
               style={inputStyle}
             />
           </div>
+          {role === 'provider' && (
+            <div>
+              {fieldLabel('Service type')}
+              <input
+                name="service_type"
+                type="text"
+                placeholder="e.g. Towing, Tyre repair, Battery jumpstart"
+                required
+                style={inputStyle}
+              />
+            </div>
+          )}
         </div>
 
         {/* Hidden city field */}
@@ -223,11 +245,11 @@ export default function WaitlistTabForm({ id }: WaitlistTabFormProps) {
         <button
           type="submit"
           disabled={isPending}
+          className="bg-brand-action hover:bg-brand-action-hover transition-colors duration-200"
           style={{
             marginTop: '24px',
             width: '100%',
             height: '48px',
-            background: '#7AB800',
             boxShadow: '0px 4px 16px rgba(122,184,0,0.3)',
             borderRadius: '12px',
             border: 'none',

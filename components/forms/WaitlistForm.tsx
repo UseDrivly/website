@@ -42,6 +42,7 @@ export default function WaitlistForm({ config }: WaitlistFormProps) {
       city:          values.city ?? '',
       role:          config.role,
       vehicle_type:  values.vehicle_type,
+      service_type:  values.service_type,
       company_name:  values.company_name,
       fleet_size:    values.fleet_size,
     };
@@ -97,7 +98,7 @@ export default function WaitlistForm({ config }: WaitlistFormProps) {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4 text-left">
         {config.fields.map((field) => {
           const value = values[field.id] ?? '';
           const inputClasses = `

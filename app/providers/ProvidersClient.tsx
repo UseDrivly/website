@@ -42,7 +42,7 @@ function StepBadge({ n, label, textColor = '#F7FAF2' }: { n: string; label: stri
 
 function GreenBtn({ href, label, id }: { href: string; label: string; id?: string }) {
   return (
-    <Link href={href} id={id} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', height: '48px', padding: '0 20px', background: '#7AB800', border: '1px solid #DCDCDC', borderRadius: '12px', fontFamily: 'Poppins, Inter, sans-serif', fontWeight: 600, fontSize: '16px', color: '#0D3D21', textDecoration: 'none', whiteSpace: 'nowrap' }}>
+    <Link href={href} id={id} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', height: '48px', padding: '0 20px', background: '#7AB800', border: '1px solid #DCDCDC', borderRadius: '12px', fontFamily: 'Poppins, Inter, sans-serif', fontWeight: 600, fontSize: '16px', color: '#0D3D21', textDecoration: 'none' }}>
       {label} <Arrow />
     </Link>
   );
@@ -57,7 +57,7 @@ function ProviderForm() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   const inputStyle: React.CSSProperties = { background: '#F7FAF2', border: '1.5px solid #D8E8D0', borderRadius: '10px', height: '44.5px', width: '100%', padding: '0 14px', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 300, fontSize: '15px', color: '#333', outline: 'none', boxSizing: 'border-box' };
-  const labelStyle: React.CSSProperties = { fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '11px', lineHeight: '18px', letterSpacing: '0.88px', textTransform: 'uppercase', color: '#8FA489', display: 'block', marginBottom: '6px' };
+  const labelStyle: React.CSSProperties = { fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '11px', lineHeight: '18px', letterSpacing: '0.88px', textTransform: 'uppercase', color: '#8FA489', display: 'block', marginBottom: '6px', textAlign: 'left' };
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -75,21 +75,21 @@ function ProviderForm() {
   }
 
   return (
-    <div style={{ background: '#FFFFFF', border: '1.5px solid #D8E8D0', boxShadow: '0px 1px 4px rgba(13,61,33,0.04), 0px 4px 32px rgba(13,61,33,0.07)', borderRadius: '20px', width: '100%', maxWidth: '597px', padding: '34px 54px 40px', margin: '0 auto' }}>
+    <div style={{ background: '#FFFFFF', border: '1.5px solid #D8E8D0', boxShadow: '0px 1px 4px rgba(13,61,33,0.04), 0px 4px 32px rgba(13,61,33,0.07)', borderRadius: '20px', width: '100%', maxWidth: '597px', margin: '0 auto' }} className="p-5 pb-8 sm:px-[54px] sm:pt-[34px] sm:pb-10">
       {/* Tab toggle — provider pre-selected */}
       <div style={{ background: '#F0F5EA', borderRadius: '10px', padding: '4px', display: 'inline-flex', gap: '4px', marginBottom: '24px' }}>
         <div style={{ padding: '10px 20px', borderRadius: '8px', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '13px', color: '#8FA489' }}>I&apos;m a Driver</div>
         <div style={{ padding: '10px 20px', borderRadius: '8px', background: '#0D3D21', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '13px', color: '#FFFFFF' }}>I&apos;m a Provider</div>
       </div>
 
-      {status === 'success' ? (
+          {status === 'success' ? (
         <div style={{ textAlign: 'center', padding: '40px 0' }}>
           <div style={{ fontSize: '40px', marginBottom: '12px' }}>✅</div>
           <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 600, fontSize: '18px', color: '#0D3D21' }}>Application received!</p>
           <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '13px', color: '#4A5E46', marginTop: '8px' }}>We&apos;ll reach out when Drivly launches in your area.</p>
         </div>
       ) : (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{ textAlign: 'left' }}>
           <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '18px', color: '#111810', marginBottom: '6px' }}>Earn more from your skills</p>
           <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '13px', color: '#4A5E46', marginBottom: '24px' }}>Get paying jobs sent directly to your phone. No joining fee.</p>
 
@@ -107,14 +107,19 @@ function ProviderForm() {
           </div>
           <div style={{ marginBottom: '28px' }}>
             <label style={labelStyle}>Service type</label>
-            <input style={inputStyle} placeholder="Input your services" value={service} onChange={e => setService(e.target.value)} />
+            <input style={inputStyle} placeholder="Input your services" value={service} onChange={e => setService(e.target.value)} required />
           </div>
 
           {status === 'error' && (
             <p style={{ color: '#dc2626', fontSize: '13px', marginBottom: '12px', textAlign: 'center' }}>Something went wrong. Please try again.</p>
           )}
 
-          <button type="submit" disabled={status === 'loading'} style={{ width: '100%', height: '48px', background: '#7AB800', boxShadow: '0px 4px 16px rgba(122,184,0,0.3)', borderRadius: '12px', border: 'none', cursor: 'pointer', fontFamily: 'Poppins, Inter, sans-serif', fontWeight: 600, fontSize: '16px', color: '#0D3D21', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+          <button
+            type="submit"
+            disabled={status === 'loading'}
+            className="bg-brand-action hover:bg-brand-action-hover transition-colors duration-200"
+            style={{ width: '100%', height: '48px', boxShadow: '0px 4px 16px rgba(122,184,0,0.3)', borderRadius: '12px', border: 'none', cursor: 'pointer', fontFamily: 'Poppins, Inter, sans-serif', fontWeight: 600, fontSize: '16px', color: '#0D3D21', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+          >
             {status === 'loading' ? 'Submitting…' : <><span>Apply to Join</span><Arrow /></>}
           </button>
           <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '11px', color: '#8FA489', textAlign: 'center', marginTop: '12px' }}>We&apos;ll notify you the moment Drivly launches in your area. No spam, ever.</p>
@@ -135,8 +140,8 @@ export default function ProvidersClient({ posts }: { posts: any[] }) {
         <div className="absolute inset-0">
           <Image src="/images/hero-providers.jpg" alt="Drivly providers hero" fill sizes="100vw" className="object-cover" priority />
         </div>
-        <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 py-20 lg:py-24">
-          <h1 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 72px)', lineHeight: '75px', letterSpacing: '-2.16px', color: '#FFFFFF', maxWidth: '1191px' }}>
+        <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 py-14 sm:py-16 lg:py-24">
+          <h1 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 72px)', lineHeight: '1.08', letterSpacing: '-2.16px', color: '#FFFFFF', maxWidth: '1191px' }}>
             Whether you own a <span style={{ color: '#7AB800' }}>workshop</span>,<br />
             <span style={{ color: '#7AB800' }}>manage a fleet</span>, or <span style={{ color: '#7AB800' }}>run a company</span>
           </h1>
@@ -239,14 +244,14 @@ export default function ProvidersClient({ posts }: { posts: any[] }) {
       </section>
 
       {/* ══ EARN MORE — #0D3D21 dark bg, steps left, phone right ══ */}
-      <section style={{ background: '#0D3D21' }} className="py-20 lg:py-28">
+      <section style={{ background: '#0D3D21' }} className="py-14 sm:py-16 lg:py-28">
         <div className="max-w-[1180px] mx-auto px-6 lg:px-12 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
           {/* Left: content */}
           <div className="flex-1 max-w-[517px]">
             <div style={{ display: 'inline-flex', alignItems: 'center', padding: '10px', border: '1px solid #7AB800', borderRadius: '4px', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '15px', color: '#7AB800', marginBottom: '16px' }}>
               FOR SERVICE PROVIDER
             </div>
-            <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 72px)', lineHeight: '75px', letterSpacing: '-2.16px', color: '#FFFFFF', margin: '0 0 16px' }}>
+            <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 72px)', lineHeight: '1.08', letterSpacing: '-2.16px', color: '#FFFFFF', margin: '0 0 16px' }}>
               Earn more from<br />your skills
             </h2>
             <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '15px', lineHeight: '26px', color: '#FFFFFF', marginBottom: '32px' }}>
@@ -268,23 +273,29 @@ export default function ProvidersClient({ posts }: { posts: any[] }) {
           </div>
 
           {/* Right: phone mockup */}
-          <div style={{ flexShrink: 0 }}>
-            <div style={{ width: '238px', height: '508px', borderRadius: '42px', overflow: 'hidden', position: 'relative', boxShadow: '0 28px 72px rgba(0,0,0,0.3)' }}>
-              <Image src="/images/provider-screen.png" alt="Provider app screen" fill sizes="238px" className="object-cover" />
+          <div className="flex justify-center lg:justify-start flex-shrink-0">
+            {/*
+              IMAGE SLOT — Driver app screen
+              File: /public/images/driver-screen.png  |  Size: 313×660px
+            */}
+            <div className="relative overflow-hidden flex-shrink-0 w-[238px] h-[501px] sm:w-[280px] sm:h-[590px] lg:w-[313px] lg:h-[660px] rounded-[42px]" style={{ boxShadow: '0 28px 72px rgba(0,0,0,0.22)' }}>
+              <Image src="/images/provider-screen.png" alt="Provider app screen" fill sizes="(max-width: 640px) 238px, (max-width: 1024px) 280px, 313px" className="object-contain" />
             </div>
           </div>
+
         </div>
       </section>
 
       {/* ══ SERVICE CENTRE — light green bg, text left, photo right ══ */}
-      <section style={{ background: '#F7FAF2' }} className="py-20 lg:py-28">
-        <div className="max-w-[1180px] mx-auto px-6 lg:px-12 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+      <section style={{ background: '#F7FAF2' }} className="py-14 sm:py-16 lg:py-28">
+        <div className="max-w-[1180px] mx-auto px-6 lg:px-12 flex flex-col lg:flex-row items-start gap-12 lg:gap-20">
           {/* Left: text */}
           <div className="flex-1 max-w-[529px]">
             <div style={{ display: 'inline-flex', alignItems: 'center', padding: '10px', background: 'rgba(122,184,0,0.15)', border: '1px solid rgba(122,184,0,0.15)', borderRadius: '4px', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '15px', color: '#0D3D21', marginBottom: '16px' }}>
               FOR SERVICE PROVIDER
             </div>
-            <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 72px)', lineHeight: '1.04', letterSpacing: '-2.16px', margin: '0 0 24px' }}>
+            {/*<h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 72px)', lineHeight: '1.04', letterSpacing: '-2.16px', margin: '0 0 24px' }}>*/}
+            <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 60px)', lineHeight: '1.04', letterSpacing: '-2.16px', margin: '0 0 24px' }}>              
               <span style={{ color: '#5F9908' }}>Become a Drivly</span><br />
               <span style={{ color: '#0D3D21' }}>Service Centre</span>
             </h2>
@@ -306,7 +317,7 @@ export default function ProvidersClient({ posts }: { posts: any[] }) {
       {/* ══ BLOGS & ARTICLES ══ */}
       <section className="bg-white py-16 lg:py-20">
         <div className="max-w-[1512px] mx-auto px-6 lg:px-20">
-          <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 72px)', lineHeight: '75px', letterSpacing: '-2.16px', color: '#5F9908', textAlign: 'center', marginBottom: '8px' }}>
+          <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 72px)', lineHeight: '1.08', letterSpacing: '-2.16px', color: '#5F9908', textAlign: 'center', marginBottom: '8px' }}>
             Blogs &amp; Articles
           </h2>
           <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '19px', lineHeight: '33px', color: '#0D3D21', textAlign: 'center', maxWidth: '499px', margin: '0 auto 48px' }}>
@@ -322,14 +333,14 @@ export default function ProvidersClient({ posts }: { posts: any[] }) {
       </section>
 
       {/* ══ JOIN THE WAITLIST — dark green gradient ══ */}
-      <section id="waitlist" style={{ background: 'linear-gradient(180deg, #186839 -48.19%, #0D3D21 100.09%)', position: 'relative', overflow: 'hidden' }} className="py-20 lg:py-28">
+      <section id="waitlist" style={{ background: 'linear-gradient(180deg, #186839 -48.19%, #0D3D21 100.09%)', position: 'relative', overflow: 'hidden' }} className="py-14 sm:py-16 lg:py-28">
         <div style={{ position: 'relative', zIndex: 10, maxWidth: '1512px', margin: '0 auto', padding: '0 24px', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
           {/* Eyebrow */}
           <div style={{ display: 'inline-flex', alignItems: 'center', padding: '10px', background: 'rgba(122,184,0,0.15)', border: '1px solid rgba(122,184,0,0.3)', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '19px', lineHeight: '33px', color: '#7AB800', marginBottom: '16px' }}>
             JOIN THE WAITLIST
           </div>
           {/* Headline */}
-          <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 72px)', lineHeight: '75px', letterSpacing: '-2.16px', color: '#FFFFFF', maxWidth: '627px', marginBottom: '8px' }}>
+          <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 72px)', lineHeight: '1.08', letterSpacing: '-2.16px', color: '#FFFFFF', maxWidth: '627px', marginBottom: '8px' }}>
             Join the network before we launch
           </h2>
           {/* Subtitle */}

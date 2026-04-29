@@ -14,15 +14,15 @@ export default function StatsBar({ stats }: StatsBarProps) {
   return (
     <section className="w-full bg-brand-dark" aria-label="Platform statistics">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-center">
+        <div className="flex flex-wrap items-stretch justify-center">
           {stats.map((stat, index) => (
             <React.Fragment key={index}>
               {/* Stat item */}
-              <div className="flex flex-col items-center justify-center py-7 px-8 sm:px-12 text-center flex-1">
+              <div className="flex flex-col items-center justify-center py-6 px-4 sm:py-7 sm:px-12 text-center flex-1 w-1/2 sm:w-auto">
                 <span className="text-3xl sm:text-4xl font-bold leading-none text-brand-action tracking-tight" style={{ letterSpacing: '-1.34px' }}>
                   {stat.value}
                 </span>
-                <span className="mt-1.5 text-xs text-white/60 leading-tight max-w-[110px] text-center">
+                <span className="mt-1.5 text-xs text-white/60 leading-tight text-center max-w-[140px] sm:max-w-[110px] min-h-[30px]">
                   {stat.label}
                 </span>
               </div>

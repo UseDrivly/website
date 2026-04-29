@@ -35,9 +35,9 @@ const teamRow2 = [
 /* ── Avatar circle — client-side img with fallback ── */
 function Avatar({ name, role, img, initials, size = 180 }: { name: string; role: string; img: string; initials: string; size?: number }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', minWidth: `${size}px` }}>
-      <div style={{ width: size, height: size, borderRadius: '50%', border: '1px solid #0D3D21', background: '#D9D9D9', overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
-        <Image src={img} alt={name} fill sizes={`${size}px`} className="object-cover" />
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', minWidth: 0 }}>
+      <div style={{ width: size, height: size, maxWidth: '70vw', maxHeight: '70vw', borderRadius: '50%', border: '1px solid #0D3D21', background: '#D9D9D9', overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
+        <Image src={img} alt={name} fill sizes="(max-width: 640px) 70vw, 180px" className="object-cover" />
       </div>
       <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '30px', lineHeight: '37px', letterSpacing: '-1px', color: '#0D3D21', textAlign: 'center', margin: 0 }}>
         {name}
@@ -58,7 +58,7 @@ export default function AboutClient() {
           <Image src="/images/hero-about.jpg" alt="Drivly about hero" fill sizes="100vw" className="object-cover" priority />
         </div>
         <div style={{ position: 'relative', zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: 'clamp(80px,12vw,113px) 24px' }}>
-          <h1 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(40px,6vw,72px)', lineHeight: '75px', letterSpacing: '-2.16px', color: '#FFFFFF', maxWidth: '1133px', margin: 0 }}>
+          <h1 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(32px,6vw,72px)', lineHeight: '1.1', letterSpacing: '-2.16px', color: '#FFFFFF', maxWidth: '1133px', margin: 0 }}>
             About us
           </h1>
         </div>
@@ -68,7 +68,7 @@ export default function AboutClient() {
       <section className="bg-white" style={{ paddingTop: '60px', paddingBottom: '40px' }}>
         <div style={{ maxWidth: '913px', margin: '0 auto', padding: '0 24px' }}>
           {aboutCopy.map((para, i) => (
-            <p key={i} style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '19px', lineHeight: '33px', color: '#000000', textAlign: 'justify', marginBottom: '24px', marginTop: 0 }}>
+            <p key={i} style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '19px', lineHeight: '33px', color: '#000000', textAlign: 'left', overflowWrap: 'anywhere', wordBreak: 'break-word', marginBottom: '24px', marginTop: 0 }}>
               {para}
             </p>
           ))}
@@ -88,7 +88,7 @@ export default function AboutClient() {
             &ldquo;
           </div>
           {/* Quote body — 32px #0D3D21 */}
-          <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '32px', lineHeight: '37px', letterSpacing: '-1px', color: '#0D3D21', maxWidth: '667px', margin: '32px 0 40px' }}>
+          <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: 'clamp(20px,3.2vw,32px)', lineHeight: '1.35', letterSpacing: '-1px', color: '#0D3D21', maxWidth: '667px', margin: '32px 0 40px' }}>
             The problem we&apos;re solving is not technical. It&apos;s structural. Nigeria has thousands of skilled mechanics and tow operators, and millions of drivers who need them. What has never existed is the organised infrastructure connecting them. That is what Drivly is building and there has never been a better time to build it.
           </p>
           {/* Founder row — 128px circle + name + title */}
@@ -111,7 +111,7 @@ export default function AboutClient() {
       {/* ══ THE TEAM — white bg, #5F9908 headline (72px) ══ */}
       <section className="bg-white" style={{ padding: '80px 24px' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(40px,6vw,72px)', lineHeight: '75px', letterSpacing: '-2.16px', color: '#5F9908', textAlign: 'center', marginBottom: '64px' }}>
+          <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(32px,6vw,72px)', lineHeight: '1.1', letterSpacing: '-2.16px', color: '#5F9908', textAlign: 'center', marginBottom: '64px' }}>
             The Team
           </h2>
           {/* Row 1 — 3 members */}
@@ -132,7 +132,7 @@ export default function AboutClient() {
           <div style={{ display: 'inline-flex', alignItems: 'center', padding: '10px 16px', background: 'rgba(122,184,0,0.15)', border: '1px solid rgba(122,184,0,0.3)', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '19px', lineHeight: '33px', color: '#7AB800', marginBottom: '24px' }}>
             PRESS &amp; MEDIA
           </div>
-          <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px,6vw,72px)', lineHeight: '75px', letterSpacing: '-2.16px', color: '#FFFFFF', margin: '0 0 8px' }}>
+          <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(28px,6vw,72px)', lineHeight: '1.1', letterSpacing: '-2.16px', color: '#FFFFFF', margin: '0 0 8px' }}>
             Media enquiries
           </h2>
           <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '19px', lineHeight: '33px', color: '#FFFFFF', marginBottom: '32px' }}>

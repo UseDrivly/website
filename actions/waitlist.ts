@@ -55,6 +55,7 @@ export async function submitWaitlist(
     const phone = (getValue('phone') ?? '').trim();
     const city = (getValue('city') ?? '').trim();
     const vehicle_type = (getValue('vehicle_type') ?? '').trim();
+    const service_type = (getValue('service_type') ?? '').trim();
     const company_name = (getValue('company_name') ?? '').trim();
     const fleet_size = (getValue('fleet_size') ?? '').trim();
 
@@ -62,6 +63,13 @@ export async function submitWaitlist(
       return {
         success: false,
         error: 'Name, email, and role are required.',
+      };
+    }
+
+    if (role === 'provider' && !service_type) {
+      return {
+        success: false,
+        error: 'Service type is required for providers.',
       };
     }
 
@@ -77,6 +85,7 @@ export async function submitWaitlist(
     };
 
     if (vehicle_type) payload.vehicle_type = vehicle_type;
+    if (service_type) payload.service_type = service_type;
     if (company_name) payload.company = company_name;
     if (fleet_size) payload.fleet_size = fleet_size;
 
@@ -101,11 +110,13 @@ export async function submitWaitlist(
       success: true,
       message: `You're on the list! We'll reach out before we launch.`,
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('[submitWaitlist] Unexpected error:', err);
+    const msg =
+      err instanceof Error ? err.message : typeof err === 'string' ? err : undefined;
     return {
       success: false,
-      error: `An unexpected error occurred: ${err?.message || String(err)}. Please try again later.`,
+      error: `An unexpected error occurred: ${msg || 'Please try again later.'}`,
     };
   }
 }

@@ -22,7 +22,7 @@ function BlogCard({ post }: { post: BlogPost }) {
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
-        height: '427px',
+        minHeight: '427px',
       }}
     >
       {/* ── Cover image (248px) ── */}
@@ -269,14 +269,14 @@ export default async function BlogPage() {
           style={{
             maxWidth: '1250px',
             margin: '0 auto',
-            padding: '0 24px',
+            padding: '0 16px',
           }}
         >
           {gridPosts.length > 0 ? (
             <div
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(330px, 1fr))',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
                 gap: '24px',
               }}
             >

@@ -44,10 +44,10 @@ export const providerWaitlistConfig: WaitlistFormConfig = {
     { id: 'phone',        label: 'Phone number',     type: 'tel',    placeholder: '+234 800 000 0000',            required: true },
     { id: 'city',         label: 'City',             type: 'text',   placeholder: 'e.g. Lagos, Abuja',            required: true },
     {
-      id: 'vehicle_type',
-      label: 'Primary service',
+      id: 'service_type',
+      label: 'Service type',
       type: 'select',
-      required: false,
+      required: true,
       options: [
         { value: 'tyre',        label: 'Tyre change / puncture repair' },
         { value: 'towing',      label: 'Towing / recovery' },

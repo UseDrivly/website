@@ -1,21 +1,19 @@
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import Container from './Container';
 
 const footerSections = [
   {
-    heading: 'Platform',
+    heading: 'PLATFORM',
     links: [
       { label: 'How it Works', href: '/#how-it-works' },
-      { label: 'For Drivers',   href: '/drivers' },
       { label: 'For Providers', href: '/providers' },
-      { label: 'For Businesses',href: '/fleet' },
+      { label: 'For Businesses', href: '/fleet' },
       { label: 'Join Waitlist', href: '/#waitlist' },
     ],
   },
   {
-    heading: 'Company',
+    heading: 'COMPANY',
     links: [
       { label: 'About Us', href: '/about' },
       { label: 'Blog',     href: '/blog' },
@@ -23,7 +21,7 @@ const footerSections = [
     ],
   },
   {
-    heading: 'Contact',
+    heading: 'CONTACT',
     links: [
       { label: 'hello@drivly.ng',  href: 'mailto:hello@drivly.ng' },
       { label: 'Media enquiries',  href: '/media' },
@@ -79,20 +77,20 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer style={{ background: '#0E1510' }} className="text-white" role="contentinfo">
+    <footer className="bg-[#0E1510] text-white" role="contentinfo">
       <Container width="wide" className="py-14">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-
+        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-[420px_1fr_1fr_1fr] lg:gap-16">
           {/* Column 1 — Brand */}
           <div className="flex flex-col gap-5">
-            <Image src="/images/logo-white.svg" alt="Drivly" width={102} height={35} />
+            <div className="text-[30px] font-extrabold tracking-[-0.5px] text-[#7AB800]">
+              Drivly
+            </div>
 
-            <p className="text-sm text-white/60 leading-relaxed max-w-xs mt-2">
+            <p className="max-w-[320px] text-[14px] leading-[1.65] text-white/70">
               Nigeria&apos;s first app-based roadside assistance platform. Verified providers. Fixed pricing. Real-time tracking. Launching in Lagos 2026.
             </p>
 
-            {/* Social Icons */}
-            <div className="flex items-center gap-3" aria-label="Social media links">
+            <div className="mt-1 flex items-center gap-3" aria-label="Social media links">
               {socialLinks.map((social) => (
                 <a
                   key={social.label}
@@ -100,11 +98,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="
-                    w-8 h-8 rounded-full flex items-center justify-center text-white
-                    transition-opacity duration-200 hover:opacity-80
-                  "
-                  style={{ background: '#7AB800' }}
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-[#7AB800] text-white transition-opacity duration-200 hover:opacity-80"
                 >
                   {social.icon}
                 </a>
@@ -114,8 +108,8 @@ export default function Footer() {
 
           {/* Columns 2-4 — Link Groups */}
           {footerSections.map((section) => (
-            <div key={section.heading} className="flex flex-col gap-4">
-              <h3 className="text-xs font-bold uppercase text-white border-b-[1.5px] border-white pb-1 max-w-max">
+            <div key={section.heading} className="flex flex-col gap-3">
+              <h3 className="text-[12px] font-bold tracking-[0.7px] text-white">
                 {section.heading}
               </h3>
               <ul className="flex flex-col gap-2.5" role="list">
@@ -123,7 +117,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-white/70 hover:text-white transition-colors duration-150"
+                      className="text-[14px] text-white/70 transition-colors duration-150 hover:text-white"
                     >
                       {link.label}
                     </Link>
@@ -135,12 +129,20 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-16 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-white/40">
-          <p>© 2026 Drivly App Ltd - Lagos, Nigeria. All rights reserved.</p>
-          <div className="flex gap-4">
-            <Link href="/privacy" className="hover:text-white/70 transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-white/70 transition-colors">Terms of Use</Link>
-            <Link href="/press" className="hover:text-white/70 transition-colors">Press</Link>
+        <div className="mt-14 border-t border-white/10 pt-6 text-[11px] text-white/50">
+          <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
+            <p>© {currentYear} Drivly App Ltd - Lagos, Nigeria. All rights reserved.</p>
+            <div className="flex gap-6">
+              <Link href="/privacy" className="transition-colors hover:text-white/70">
+                Privacy Policy
+              </Link>
+              <Link href="/terms" className="transition-colors hover:text-white/70">
+                Terms of Use
+              </Link>
+              <Link href="/press" className="transition-colors hover:text-white/70">
+                Press
+              </Link>
+            </div>
           </div>
         </div>
       </Container>

@@ -67,7 +67,7 @@ function DarkBtn({ href, label, id }: { href: string; label: string; id?: string
       height: '48px', padding: '0 20px',
       background: '#0D3D21', border: '1px solid #DCDCDC', borderRadius: '12px',
       fontFamily: 'Poppins, Inter, sans-serif', fontWeight: 600, fontSize: '16px', color: '#FFFFFF',
-      textDecoration: 'none', whiteSpace: 'nowrap',
+      textDecoration: 'none',
     }}>
       {label} <Arrow />
     </Link>
@@ -82,7 +82,7 @@ function GreenBtn({ href, label, id }: { href: string; label: string; id?: strin
       height: '48px', padding: '0 20px',
       background: '#7AB800', border: '1px solid #DCDCDC', borderRadius: '12px',
       fontFamily: 'Poppins, Inter, sans-serif', fontWeight: 600, fontSize: '16px', color: '#0D3D21',
-      textDecoration: 'none', whiteSpace: 'nowrap',
+      textDecoration: 'none',
     }}>
       {label} <Arrow />
     </Link>
@@ -132,13 +132,13 @@ export default async function DriversPage() {
         <div className="absolute inset-0">
           <Image src="/images/hero-drivers.jpg" alt="Drivly drivers hero" fill sizes="100vw" className="object-cover" priority />
         </div>
-        <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 py-20 lg:py-24">
+        <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 py-14 sm:py-16 lg:py-24">
           {/* Headline — "Help is one tap away" in #7AB800 */}
           <h1 style={{
             fontFamily: 'Helvetica Neue, Inter, sans-serif',
             fontWeight: 700,
             fontSize: 'clamp(48px, 5vw, 72px)',
-            lineHeight: '75px',
+            lineHeight: '1.08',
             letterSpacing: '-2.16px',
             color: '#7AB800',
             maxWidth: '674px',
@@ -170,8 +170,8 @@ export default async function DriversPage() {
           Left: headline + body + CTA | Right: photo (557×534px)
           Matches spec: top 716 headline in #5F9908
           ══════════════════════════════════════════════════════ */}
-      <section className="bg-white py-20 lg:py-24">
-        <div className="max-w-[1512px] mx-auto px-6 lg:px-20 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+      <section className="bg-white py-14 sm:py-16 lg:py-24">
+        <div className="max-w-[1180px] mx-auto px-6 lg:px-12 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
 
           {/* Left: text */}
           <div className="flex-1 flex flex-col gap-5" style={{ maxWidth: '530px' }}>
@@ -179,7 +179,7 @@ export default async function DriversPage() {
               fontFamily: 'Helvetica Neue, Inter, sans-serif',
               fontWeight: 700,
               fontSize: 'clamp(40px, 5vw, 72px)',
-              lineHeight: '75px',
+              lineHeight: '1.08',
               letterSpacing: '-2.16px',
               color: '#5F9908',
             }}>
@@ -193,7 +193,10 @@ export default async function DriversPage() {
               color: '#000000',
               maxWidth: '459px',
             }}>
-              Your car stops, you&apos;re stranded, vulnerable, and exposed with no one to call and no way to know who will show up. Every stranger who approaches is a risk you didn&apos;t sign up for. Every price named is one you have no power to question. We built Drivly to change exactly that.
+              Your car stops, you&apos;re stranded, vulnerable, and exposed with no one to call and no way to know who will show up. Every stranger who approaches is a risk you didn&apos;t sign up for. Every price named is one you have no power to question. 
+              <br />
+              <br />
+              <b>We built Drivly to change exactly that.</b>
             </p>
             <div className="mt-2">
               <DarkBtn href="#waitlist" label="Join the Driver Waitlist" id="driver-hero-cta" />
@@ -223,7 +226,7 @@ export default async function DriversPage() {
           Left: phone mockup (313×660) | Right: FOR DRIVERS eyebrow + headline + 4 steps
           Matches spec: bg Rectangle 4833 at top 1301, height 824
           ══════════════════════════════════════════════════════ */}
-      <section id="how-it-works" style={{ background: '#F7FAF2' }} className="py-20 lg:py-28">
+      <section id="how-it-works" style={{ background: '#F7FAF2' }} className="py-14 sm:py-16 lg:py-28">
         <div className="max-w-[1180px] mx-auto px-6 lg:px-12 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
           {/* Left: phone */}
           <div className="flex justify-center lg:justify-start flex-shrink-0">
@@ -231,19 +234,19 @@ export default async function DriversPage() {
               IMAGE SLOT — Driver app screen
               File: /public/images/driver-screen.png  |  Size: 313×660px
             */}
-            <div style={{ width: '238px', height: '501px', borderRadius: '42px', overflow: 'hidden', position: 'relative', boxShadow: '0 28px 72px rgba(0,0,0,0.22)' }}>
-              <Image src="/images/driver-screen.png" alt="Driver app screen" fill sizes="238px" className="object-cover" />
+            <div className="relative overflow-hidden flex-shrink-0 w-[238px] h-[501px] sm:w-[280px] sm:h-[590px] lg:w-[313px] lg:h-[660px] rounded-[42px]" style={{ boxShadow: '0 28px 72px rgba(0,0,0,0.22)' }}>
+              <Image src="/images/driver-screen.png" alt="Driver app screen" fill sizes="(max-width: 640px) 238px, (max-width: 1024px) 280px, 313px" className="object-contain" />
             </div>
           </div>
 
           {/* Right: content */}
-          <div className="flex-1 max-w-[600px]">
+          <div className="flex-1 max-w-[700px]">
             <EyebrowPill text="FOR DRIVERS" />
             <h2 style={{
               fontFamily: 'Helvetica Neue, Inter, sans-serif',
               fontWeight: 700,
-              fontSize: 'clamp(36px, 4.5vw, 72px)',
-              lineHeight: '75px',
+              fontSize: 'clamp(28px, 4.5vw, 72px)',
+              lineHeight: '1.1',
               letterSpacing: '-2.16px',
               color: '#5F9908',
               margin: '16px 0 24px',
@@ -277,7 +280,7 @@ export default async function DriversPage() {
           WHAT WE COVER — white bg, centred, 3×2 grid
           Matches spec: "WHAT WE COVER" eyebrow, "Six ways Drivly has you covered."
           ══════════════════════════════════════════════════════ */}
-      <section className="bg-white py-20 lg:py-28">
+      <section className="bg-white py-14 sm:py-16 lg:py-28">
         <div className="max-w-[1180px] mx-auto px-6 lg:px-12">
           <div className="flex justify-center mb-6">
             <EyebrowPill text="WHAT WE COVER" />
@@ -309,7 +312,7 @@ export default async function DriversPage() {
             fontFamily: 'Helvetica Neue, Inter, sans-serif',
             fontWeight: 700,
             fontSize: 'clamp(36px, 5vw, 72px)',
-            lineHeight: '75px',
+            lineHeight: '1.08',
             letterSpacing: '-2.16px',
             color: '#5F9908',
             textAlign: 'center',
@@ -347,7 +350,7 @@ export default async function DriversPage() {
           Matches spec: linear-gradient(180deg, #186839 -48.19%, #0D3D21 100.09%)
           Centred: eyebrow + headline + subtitle + form card (759px)
           ══════════════════════════════════════════════════════ */}
-      <section id="waitlist" className="py-20 lg:py-28" style={{ background: 'linear-gradient(180deg, #186839 -48.19%, #0D3D21 100.09%)', position: 'relative', overflow: 'hidden' }}>
+      <section id="waitlist" className="py-14 sm:py-16 lg:py-28" style={{ background: 'linear-gradient(180deg, #186839 -48.19%, #0D3D21 100.09%)', position: 'relative', overflow: 'hidden' }}>
         {/* Decorative angled white strips (background pattern from spec) */}
         <div aria-hidden="true" className="absolute inset-0 pointer-events-none overflow-hidden opacity-[0.02]">
           {[...Array(5)].map((_, i) => (
@@ -379,7 +382,7 @@ export default async function DriversPage() {
             fontFamily: 'Helvetica Neue, Inter, sans-serif',
             fontWeight: 700,
             fontSize: 'clamp(36px, 5vw, 72px)',
-            lineHeight: '75px',
+            lineHeight: '1.08',
             letterSpacing: '-2.16px',
             color: '#FFFFFF',
             maxWidth: '627px',

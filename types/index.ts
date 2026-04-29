@@ -39,6 +39,8 @@ export interface WaitlistFormData {
   city: string;
   role: WaitlistRole;
   vehicle_type?: string;
+  /** Provider-specific (required when role === 'provider') */
+  service_type?: string;
   company_name?: string;
   fleet_size?: string;
 }

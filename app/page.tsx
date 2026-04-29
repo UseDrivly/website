@@ -8,6 +8,7 @@ import ServiceCard from '@/components/ui/ServiceCard';
 import { services } from '@/lib/data/services';
 import { homeStats } from '@/lib/data/stats';
 import { getPosts } from '@/lib/supabase/posts';
+import Container from '@/components/layout/Container';
 
 /* Inline SVG icons — no lucide dependency needed */
 const ArrowRight = ({ size = 18, color = 'currentColor', strokeWidth = 1.5 }: { size?: number; color?: string; strokeWidth?: number }) => (
@@ -127,7 +128,7 @@ export default async function HomePage() {
           HERO — split layout: left text + right form card
           bg: dark green overlay on image
           ══════════════════════════════════════════════════════ */}
-      <section className="relative min-h-[860px] flex items-stretch overflow-hidden">
+      <section className="relative min-h-[620px] sm:min-h-[720px] lg:min-h-[860px] flex items-stretch overflow-hidden">
         {/*
           IMAGE SLOT — Hero background photo
           File: /public/images/hero-home.jpg  |  Size: 1440×800px
@@ -138,7 +139,7 @@ export default async function HomePage() {
           <Image src="/images/hero-home.jpg" alt="Drivly home hero" fill sizes="100vw" className="object-cover" priority />
         </div>
 
-        <div className="relative z-10 w-full max-w-[1512px] mx-auto px-6 lg:px-12 xl:pl-[150px] xl:pr-[172px] pt-[120px] lg:pt-[103px] pb-[134px] flex flex-col lg:flex-row items-center xl:items-start justify-between gap-12 lg:gap-8">
+        <Container width="wide" className="relative z-10 pt-20 sm:pt-24 lg:pt-[103px] pb-16 sm:pb-20 lg:pb-[134px] flex flex-col lg:flex-row items-center xl:items-start justify-between gap-10 sm:gap-12 lg:gap-8">
 
           {/* ── Left: Headline + CTAs ─────────────────────── */}
           <div className="flex-1 flex flex-col w-full max-w-[600px] mt-0 xl:mt-[22px]">
@@ -167,13 +168,18 @@ export default async function HomePage() {
             {/* Two CTA buttons */}
             <div className="flex flex-wrap gap-[10px]">
               {/* Primary: dark green */}
-              <Link href="/#waitlist" id="hero-driver-cta" className="w-full sm:w-[286px]" style={{
+              <Link
+                href="/#waitlist"
+                id="hero-driver-cta"
+                className="w-full sm:w-[286px] transition-opacity duration-200 hover:opacity-90"
+                style={{
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                 height: '48px',
                 background: '#0D3D21', border: '1px solid rgba(220,220,220,0.3)', borderRadius: '12px',
                 fontFamily: 'Poppins, Inter, sans-serif', fontWeight: 600, fontSize: '16px', color: '#FFFFFF',
                 textDecoration: 'none',
-              }}>
+              }}
+              >
                 I&apos;m a Driver – Join the Waitlist
               </Link>
               {/* Secondary: border only */}
@@ -193,7 +199,7 @@ export default async function HomePage() {
           <div className="w-full lg:w-[421px] flex-shrink-0 mt-[40px] lg:mt-0">
             <WaitlistTabForm id="hero-form" />
           </div>
-        </div>
+        </Container>
 
         {/* Scroll hint absolute at bottom center */}
         <div className="absolute bottom-[40px] left-1/2 -translate-x-1/2 flex flex-col items-center opacity-60 z-10">
@@ -212,7 +218,7 @@ export default async function HomePage() {
           Left: text, Right: photo
           ══════════════════════════════════════════════════════ */}
       <section style={{ background: '#0E1510' }}>
-        <div className="max-w-[1180px] mx-auto px-6 lg:px-12 py-20 lg:py-24 flex flex-col lg:flex-row items-center gap-12">
+        <div className="max-w-[1180px] mx-auto px-6 lg:px-12 py-14 sm:py-16 lg:py-24 flex flex-col lg:flex-row items-center gap-10 sm:gap-12">
           {/* Left */}
           <div className="flex-1 flex flex-col gap-5 max-w-[521px]">
             <h2 style={{
@@ -247,7 +253,7 @@ export default async function HomePage() {
       {/* ══════════════════════════════════════════════════════
           WHO IT'S FOR — white bg, two cards side by side
           ══════════════════════════════════════════════════════ */}
-      <section className="bg-white py-20 lg:py-28">
+      <section className="bg-white py-14 sm:py-16 lg:py-28">
         <div className="max-w-[1180px] mx-auto px-6 lg:px-12">
           <EyebrowPill text="WHO IT'S FOR" />
           <div className="mt-4 mb-3">
@@ -312,7 +318,7 @@ export default async function HomePage() {
           FOR DRIVERS — light green bg #F7FAF2
           Left: phone mockup, Right: 4 steps
           ══════════════════════════════════════════════════════ */}
-      <section id="how-it-works" style={{ background: '#F7FAF2' }} className="py-20 lg:py-28">
+      <section id="how-it-works" style={{ background: '#F7FAF2' }} className="py-14 sm:py-16 lg:py-28">
         <div className="max-w-[1180px] mx-auto px-6 lg:px-12 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
           {/* Left: phone */}
           <div className="flex justify-center lg:justify-start flex-shrink-0">
@@ -320,13 +326,13 @@ export default async function HomePage() {
               IMAGE SLOT — Driver app screen
               File: /public/images/driver-screen.png  |  Size: 313×660px
             */}
-            <div style={{ width: '238px', height: '501px', borderRadius: '42px', overflow: 'hidden', position: 'relative', boxShadow: '0 28px 72px rgba(0,0,0,0.22)' }}>
-              <Image src="/images/driver-screen.png" alt="Driver app screen" fill sizes="238px" className="object-cover" />
+            <div className="relative overflow-hidden flex-shrink-0 w-[238px] h-[501px] sm:w-[280px] sm:h-[590px] lg:w-[313px] lg:h-[660px] rounded-[42px]" style={{ boxShadow: '0 28px 72px rgba(0,0,0,0.22)' }}>
+              <Image src="/images/driver-screen.png" alt="Driver app screen" fill sizes="(max-width: 640px) 238px, (max-width: 1024px) 280px, 313px" className="object-contain" />
             </div>
           </div>
 
           {/* Right: content */}
-          <div className="flex-1 max-w-[600px]">
+          <div className="flex-1 max-w-[700px]">
             <EyebrowPill text="FOR DRIVERS" />
             <h2 style={{
               fontFamily: 'Helvetica Neue, Inter, sans-serif',
@@ -366,8 +372,8 @@ export default async function HomePage() {
           FOR SERVICE PROVIDERS — dark green bg #0D3D21
           Left: 4 steps, Right: phone mockup
           ══════════════════════════════════════════════════════ */}
-      <section style={{ background: '#0D3D21' }} className="py-20 lg:py-28">
-        <div className="max-w-[1180px] mx-auto px-6 lg:px-12 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+      <section style={{ background: '#0D3D21' }} className="py-14 sm:py-16 lg:py-28">
+        <Container width="wide" className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
           {/* Left: content */}
           <div className="flex-1 max-w-[600px]">
             <EyebrowPill text="FOR SERVICE PROVIDER" actionColor />
@@ -398,23 +404,24 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Right: phone */}
-          <div className="flex justify-center flex-shrink-0">
+
+          {/* Right: phone mockup */}
+          <div className="flex justify-center lg:justify-start flex-shrink-0">
             {/*
-              IMAGE SLOT — Provider app screen
-              File: /public/images/provider-screen.png  |  Size: 307×656px
+              IMAGE SLOT — Driver app screen
+              File: /public/images/driver-screen.png  |  Size: 313×660px
             */}
-            <div style={{ width: '238px', height: '508px', borderRadius: '42px', overflow: 'hidden', position: 'relative', boxShadow: '0 28px 72px rgba(0,0,0,0.3)' }}>
-              <Image src="/images/provider-screen.png" alt="Provider app screen" fill sizes="238px" className="object-cover" />
+            <div className="relative overflow-hidden flex-shrink-0 w-[238px] h-[501px] sm:w-[280px] sm:h-[590px] lg:w-[313px] lg:h-[660px] rounded-[42px]" style={{ boxShadow: '0 28px 72px rgba(0,0,0,0.22)' }}>
+              <Image src="/images/provider-screen.png" alt="Provider app screen" fill sizes="(max-width: 640px) 238px, (max-width: 1024px) 280px, 313px" className="object-contain" />
             </div>
           </div>
-        </div>
+        </Container>
       </section>
 
       {/* ══════════════════════════════════════════════════════
           WHAT WE COVER — light green bg, 3×2 services grid
           ══════════════════════════════════════════════════════ */}
-      <section style={{ background: '#F7FAF2' }} className="py-20 lg:py-28">
+      <section style={{ background: '#F7FAF2' }} className="py-14 sm:py-16 lg:py-28">
         <div className="max-w-[1180px] mx-auto px-6 lg:px-12">
           <div className="flex justify-center mb-6">
             <EyebrowPill text="WHAT WE COVER" />
@@ -465,7 +472,7 @@ export default async function HomePage() {
           JOIN THE WAITLIST — dark green bg #0D3D21
           Centred: eyebrow + headline + large form card
           ══════════════════════════════════════════════════════ */}
-      <section id="waitlist" style={{ background: '#0D3D21' }} className="py-20 lg:py-28">
+      <section id="waitlist" style={{ background: '#0D3D21' }} className="py-14 sm:py-16 lg:py-28">
         <div className="max-w-[1180px] mx-auto px-6 lg:px-12 flex flex-col items-center text-center">
           <EyebrowPill text="JOIN THE WAITLIST" actionColor />
           <h2 style={{

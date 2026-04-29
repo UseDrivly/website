@@ -74,7 +74,7 @@ function BusinessForm() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   const inp: React.CSSProperties = { background: '#F7FAF2', border: '1.5px solid #D8E8D0', borderRadius: '10px', height: '44.5px', width: '100%', padding: '0 14px', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 300, fontSize: '15px', color: '#333', outline: 'none', boxSizing: 'border-box' };
-  const lbl: React.CSSProperties = { fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '11px', lineHeight: '18px', letterSpacing: '0.88px', textTransform: 'uppercase', color: '#8FA489', display: 'block', marginBottom: '6px' };
+  const lbl: React.CSSProperties = { fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '11px', lineHeight: '18px', letterSpacing: '0.88px', textTransform: 'uppercase', color: '#8FA489', display: 'block', marginBottom: '6px', textAlign: 'left' };
   const fld: React.CSSProperties = { marginBottom: '14px' };
 
   async function submit(e: React.FormEvent) {
@@ -86,7 +86,7 @@ function BusinessForm() {
   }
 
   return (
-    <div style={{ background: '#FFFFFF', border: '1.5px solid #D8E8D0', boxShadow: '0px 1px 4px rgba(13,61,33,0.04), 0px 4px 32px rgba(13,61,33,0.07)', borderRadius: '20px', width: '100%', maxWidth: '663px', padding: '34px 57px 44px', margin: '0 auto' }}>
+    <div style={{ background: '#FFFFFF', border: '1.5px solid #D8E8D0', boxShadow: '0px 1px 4px rgba(13,61,33,0.04), 0px 4px 32px rgba(13,61,33,0.07)', borderRadius: '20px', width: '100%', maxWidth: '663px', margin: '0 auto' }} className="p-5 pb-8 sm:px-[57px] sm:pt-[34px] sm:pb-11">
       {/* Active tab — "For Business" */}
       <div style={{ background: '#F0F5EA', borderRadius: '10px', padding: '4px', display: 'inline-flex', gap: '4px', marginBottom: '24px' }}>
         <div style={{ padding: '10px 24px', borderRadius: '8px', background: '#0D3D21', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '13px', color: '#FFFFFF' }}>For Business</div>
@@ -100,7 +100,7 @@ function BusinessForm() {
           <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '13px', color: '#4A5E46', marginTop: '8px' }}>We&apos;ll be in touch when Drivly launches in your area.</p>
         </div>
       ) : (
-        <form onSubmit={submit}>
+        <form onSubmit={submit} style={{ textAlign: 'left' }}>
           <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '18px', color: '#111810', marginBottom: '6px' }}>Get early access</p>
           <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '13px', color: '#4A5E46', marginBottom: '24px' }}>Be among the first drivers in Lagos to use Drivly when we launch.</p>
 
@@ -124,7 +124,12 @@ function BusinessForm() {
 
           {status === 'error' && <p style={{ color: '#dc2626', fontSize: '13px', marginBottom: '12px', textAlign: 'center' }}>Something went wrong. Please try again.</p>}
 
-          <button type="submit" disabled={status === 'loading'} style={{ width: '100%', height: '48px', background: '#7AB800', boxShadow: '0px 4px 16px rgba(122,184,0,0.3)', borderRadius: '12px', border: 'none', cursor: 'pointer', fontFamily: 'Poppins, Inter, sans-serif', fontWeight: 600, fontSize: '16px', color: '#0D3D21', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+          <button
+            type="submit"
+            disabled={status === 'loading'}
+            className="bg-brand-action hover:bg-brand-action-hover transition-colors duration-200"
+            style={{ width: '100%', height: '48px', boxShadow: '0px 4px 16px rgba(122,184,0,0.3)', borderRadius: '12px', border: 'none', cursor: 'pointer', fontFamily: 'Poppins, Inter, sans-serif', fontWeight: 600, fontSize: '16px', color: '#0D3D21', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+          >
             {status === 'loading' ? 'Submitting…' : <><span>Join the Waitlist</span><Arrow /></>}
           </button>
           <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '11px', color: '#8FA489', textAlign: 'center', marginTop: '12px' }}>We&apos;ll notify you the moment Drivly launches in your area. No spam, ever.</p>
@@ -145,7 +150,7 @@ export default function BusinessesClient({ posts }: { posts: any[] }) {
         <div className="absolute inset-0">
           <Image src="/images/hero-fleet.jpg" alt="Drivly fleet hero" fill sizes="100vw" className="object-cover" priority />
         </div>
-        <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 py-20 lg:py-24">
+        <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 py-14 sm:py-16 lg:py-24">
           <h1 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 72px)', lineHeight: '1.04', letterSpacing: '-2.16px', color: '#FFFFFF', maxWidth: '800px' }}>
             Real-Time Rescue and<br />
             <span style={{ color: '#7AB800' }}>Fleet Management</span>
@@ -160,7 +165,7 @@ export default function BusinessesClient({ posts }: { posts: any[] }) {
       <StatsBar stats={businessStats} />
 
       {/* ══ WE TAKE OVER — white bg, headline left, photo right ══ */}
-      <section className="bg-white py-20 lg:py-28">
+      <section className="bg-white py-14 sm:py-16 lg:py-28">
         <div className="max-w-[1180px] mx-auto px-6 lg:px-12 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
           {/* Left */}
           <div className="flex-1 max-w-[506px]">
@@ -172,7 +177,12 @@ export default function BusinessesClient({ posts }: { posts: any[] }) {
             <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '15px', lineHeight: '26px', color: '#111810', marginBottom: '32px' }}>
               We take over the moment something goes wrong dispatching rescue, coordinating fixes, and keeping your fleet moving without disruption.
             </p>
-            <Link href="#waitlist" id="business-hero-cta" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', height: '48px', padding: '0 20px', background: '#0D3D21', border: '1px solid #DCDCDC', borderRadius: '12px', fontFamily: 'Poppins, Inter, sans-serif', fontWeight: 600, fontSize: '16px', color: '#FFFFFF', textDecoration: 'none' }}>
+            <Link
+              href="#waitlist"
+              id="business-hero-cta"
+              className="transition-opacity duration-200 hover:opacity-90"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', height: '48px', padding: '0 20px', background: '#0D3D21', border: '1px solid #DCDCDC', borderRadius: '12px', fontFamily: 'Poppins, Inter, sans-serif', fontWeight: 600, fontSize: '16px', color: '#FFFFFF', textDecoration: 'none' }}
+            >
               Join the Waitlist <Arrow />
             </Link>
           </div>
@@ -188,25 +198,25 @@ export default function BusinessesClient({ posts }: { posts: any[] }) {
 
       {/* ══ POWERING EVERY INDUSTRY — #F7FAF2 bg ══ */}
       <section style={{ background: '#F7FAF2' }} className="py-16 lg:py-20">
-        <div className="max-w-[1512px] mx-auto px-6 lg:px-20">
+        <div className="max-w-[1208px] mx-auto px-4 sm:px-6 lg:px-8">
           {/* Centred headline */}
-          <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 72px)', lineHeight: '75px', letterSpacing: '-2.16px', color: '#5F9908', textAlign: 'center', marginBottom: '8px' }}>
+          <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 60px)', lineHeight: '1.04', letterSpacing: '-2.16px', color: '#5F9908', textAlign: 'center', marginBottom: '8px' }}>
             Powering Every Industry
           </h2>
-          <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '19px', lineHeight: '33px', color: '#000000', textAlign: 'center', maxWidth: '506px', margin: '0 auto 40px' }}>
+          <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '19px', lineHeight: '1.74', color: '#000000', textAlign: 'center', maxWidth: '506px', margin: '0 auto 40px' }}>
             Trusted across Lagos to keep operations running
           </p>
 
           {/* 2 rows × 3 industry photo cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
             {industries.map((ind) => (
               <div key={ind.label}>
-                {/* Photo card (363×168 rounded) */}
-                <div style={{ background: '#FFFFFF', borderRadius: '16px', overflow: 'hidden', height: '168px', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-                  <Image src={ind.img} alt={ind.label} fill sizes="(max-width: 640px) 100vw, 33vw" className="object-cover" />
+                {/* Photo card (16px rounded corners) */}
+                <div style={{ background: '#FFFFFF', borderRadius: '16px', overflow: 'hidden', aspectRatio: '363/168', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                  <Image src={ind.img} alt={ind.label} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover" />
                 </div>
                 {/* Label below */}
-                <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: '16px', lineHeight: '20px', color: '#0E1510', marginTop: '10px', paddingLeft: '4px' }}>
+                <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: '16px', lineHeight: '1.25', color: '#0E1510', marginTop: '12px', textAlign: 'center' }}>
                   {ind.label}
                 </p>
               </div>
@@ -216,7 +226,7 @@ export default function BusinessesClient({ posts }: { posts: any[] }) {
       </section>
 
       {/* ══ WHAT WE COVER — white bg, centred, 3×2 service cards ══ */}
-      <section className="bg-white py-20 lg:py-28">
+      <section className="bg-white py-14 sm:py-16 lg:py-28">
         <div className="max-w-[1180px] mx-auto px-6 lg:px-12">
           <div className="flex justify-center mb-6">
             <EyebrowPill text="WHAT WE COVER" />
@@ -240,7 +250,7 @@ export default function BusinessesClient({ posts }: { posts: any[] }) {
       {/* ══ BLOGS & ARTICLES ══ */}
       <section className="bg-white py-16 lg:py-20">
         <div className="max-w-[1512px] mx-auto px-6 lg:px-20">
-          <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 72px)', lineHeight: '75px', letterSpacing: '-2.16px', color: '#5F9908', textAlign: 'center', marginBottom: '8px' }}>
+          <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 72px)', lineHeight: '1.08', letterSpacing: '-2.16px', color: '#5F9908', textAlign: 'center', marginBottom: '8px' }}>
             Blogs &amp; Articles
           </h2>
           <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '19px', lineHeight: '33px', color: '#0D3D21', textAlign: 'center', maxWidth: '499px', margin: '0 auto 48px' }}>
@@ -256,14 +266,14 @@ export default function BusinessesClient({ posts }: { posts: any[] }) {
       </section>
 
       {/* ══ JOIN THE WAITLIST — dark green gradient, business form ══ */}
-      <section id="waitlist" style={{ background: 'linear-gradient(180deg, #186839 -48.19%, #0D3D21 100.09%)', position: 'relative', overflow: 'hidden' }} className="py-20 lg:py-28">
+      <section id="waitlist" style={{ background: 'linear-gradient(180deg, #186839 -48.19%, #0D3D21 100.09%)', position: 'relative', overflow: 'hidden' }} className="py-14 sm:py-16 lg:py-28">
         <div style={{ position: 'relative', zIndex: 10, maxWidth: '1512px', margin: '0 auto', padding: '0 24px', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
           {/* Eyebrow */}
           <div style={{ display: 'inline-flex', alignItems: 'center', padding: '10px', background: 'rgba(122,184,0,0.15)', border: '1px solid rgba(122,184,0,0.3)', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '19px', lineHeight: '33px', color: '#7AB800', marginBottom: '16px' }}>
             JOIN THE WAITLIST
           </div>
           {/* Headline */}
-          <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 72px)', lineHeight: '75px', letterSpacing: '-2.16px', color: '#FFFFFF', maxWidth: '627px', marginBottom: '8px' }}>
+          <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 72px)', lineHeight: '1.08', letterSpacing: '-2.16px', color: '#FFFFFF', maxWidth: '627px', marginBottom: '8px' }}>
             Join the network before we launch
           </h2>
           {/* Subtitle */}

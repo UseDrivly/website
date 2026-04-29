@@ -28,6 +28,14 @@ CREATE TABLE IF NOT EXISTS public.waitlist (
   created_at TIMESTAMPTZ DEFAULT now() NOT NULL
 );
 
+-- Enforce: provider rows must include service_type
+ALTER TABLE public.waitlist
+  ADD CONSTRAINT waitlist_provider_service_type_required
+  CHECK (
+    role <> 'provider'
+    OR (service_type IS NOT NULL AND btrim(service_type) <> '')
+  );
+
 -- 2. Create Career Applications Table
 CREATE TABLE IF NOT EXISTS public.career_applications (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,

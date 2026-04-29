@@ -36,6 +36,7 @@ const lbl: React.CSSProperties = {
   color: '#8FA489',
   display: 'block',
   marginBottom: '6px',
+  textAlign: 'left',
 };
 const fld: React.CSSProperties = { marginBottom: '14px' };
 
@@ -73,7 +74,7 @@ function ApplicationForm({ jobs }: { jobs: CareerJob[] }) {
           <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '13px', color: '#4A5E46', marginTop: '8px' }}>We&apos;ll respond within one week.</p>
         </div>
       ) : (
-        <form onSubmit={submit}>
+        <form onSubmit={submit} style={{ textAlign: 'left' }}>
           <div style={fld}><label style={lbl}>Full name</label><input style={inp} placeholder="Emeka Okafor" value={name} onChange={e => setName(e.target.value)} required /></div>
           <div style={fld}><label style={lbl}>Phone number</label><input style={inp} placeholder="+234 800 000 0000" value={phone} onChange={e => setPhone(e.target.value)} required /></div>
           <div style={fld}><label style={lbl}>Email address</label><input style={inp} type="email" placeholder="emeka@email.com" value={email} onChange={e => setEmail(e.target.value)} required /></div>
@@ -118,7 +119,7 @@ export default function CareersClient({ jobs }: { jobs: CareerJob[] }) {
         </div>
         <div style={{ position: 'relative', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: 'clamp(80px,12vw,113px) 24px' }}>
           {/* "Build something that matters to millions of Nigerians." */}
-          <h1 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px,5.5vw,72px)', lineHeight: '75px', letterSpacing: '-2.16px', color: '#FFFFFF', maxWidth: '1191px', margin: 0 }}>
+          <h1 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(30px,5.5vw,72px)', lineHeight: '1.1', letterSpacing: '-2.16px', color: '#FFFFFF', maxWidth: '1191px', margin: 0 }}>
             Build something that matters <br />
             to <span style={{ color: '#7AB800' }}>millions</span> of Nigerians.
           </h1>
@@ -128,7 +129,7 @@ export default function CareersClient({ jobs }: { jobs: CareerJob[] }) {
       {/* ══ "WE'RE LOOKING FOR…" — white bg, #5F9908 headline ══ */}
       <section className="bg-white" style={{ paddingTop: '64px', paddingBottom: '40px' }}>
         <div style={{ maxWidth: '1512px', margin: '0 auto', padding: '0 24px', textAlign: 'center' }}>
-          <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px,5.5vw,72px)', lineHeight: '75px', letterSpacing: '-2.16px', color: '#5F9908', margin: '0 0 16px' }}>
+          <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(28px,5.5vw,72px)', lineHeight: '1.1', letterSpacing: '-2.16px', color: '#5F9908', margin: '0 0 16px' }}>
             We&apos;re looking for<br />a few good people
           </h2>
           {/* Tagline */}
@@ -140,11 +141,11 @@ export default function CareersClient({ jobs }: { jobs: CareerJob[] }) {
 
       {/* ══ JOB CARDS — white bg ══ */}
       <section className="bg-white" style={{ paddingBottom: '80px' }}>
-        <div style={{ maxWidth: '1199px', margin: '0 auto', padding: '0 24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <div style={{ maxWidth: '1199px', margin: '0 auto', padding: '0 16px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {jobs.map((job) => (
-            <div key={job.id} style={{ background: '#F7FAF2', border: '3px solid rgba(122,184,0,0.15)', borderRadius: '20px', padding: '40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '24px' }}>
+            <div key={job.id} style={{ background: '#F7FAF2', border: '3px solid rgba(122,184,0,0.15)', borderRadius: '20px', padding: 'clamp(20px,4vw,40px)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '24px' }}>
               {/* Left: title + description + pills */}
-              <div style={{ flex: 1, minWidth: '280px' }}>
+              <div style={{ flex: 1, minWidth: '240px' }}>
                 <h3 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: '28px', lineHeight: '34px', color: '#0D3D21', margin: '0 0 10px' }}>
                   {job.title}
                 </h3>
@@ -173,7 +174,7 @@ export default function CareersClient({ jobs }: { jobs: CareerJob[] }) {
       <section id="apply" style={{ background: '#12502C', padding: '80px 24px' }}>
         <div style={{ maxWidth: '1512px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
           {/* Headline */}
-          <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(36px,5.5vw,72px)', lineHeight: '75px', letterSpacing: '-2.16px', color: '#FFFFFF', margin: '0 0 8px' }}>
+          <h2 style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 700, fontSize: 'clamp(28px,5.5vw,72px)', lineHeight: '1.1', letterSpacing: '-2.16px', color: '#FFFFFF', margin: '0 0 8px' }}>
             Send your application
           </h2>
           {/* Subtitle */}

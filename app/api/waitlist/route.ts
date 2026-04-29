@@ -35,6 +35,16 @@ export async function POST(request: Request) {
       );
     }
 
+    const normalizedRole = String(role).trim().toLowerCase();
+    const normalizedServiceType = typeof service_type === 'string' ? service_type.trim() : '';
+
+    if (normalizedRole === 'provider' && !normalizedServiceType) {
+      return NextResponse.json(
+        { error: 'Service type is required for providers.' },
+        { status: 400 }
+      );
+    }
+
     const supabase = await createSupabaseServerClient();
 
     // Build payload mapping exact database columns
@@ -42,14 +52,14 @@ export async function POST(request: Request) {
       name: name.trim(),
       email: email.trim().toLowerCase(),
       phone: phone?.trim() ?? '',
-      role: role.trim().toLowerCase(),
+      role: normalizedRole,
       
       // Optional fields
       city: city?.trim() ?? null,
       state: state?.trim() ?? null,
       company: company?.trim() ?? null,
       vehicle_type: vehicle_type?.trim() ?? null,
-      service_type: service_type?.trim() ?? null,
+      service_type: normalizedServiceType || null,
       business_type: business_type?.trim() ?? null,
       message: message?.trim() ?? null,
       fleet_size: fleet_size?.trim() ?? null,
@@ -57,7 +67,7 @@ export async function POST(request: Request) {
 
     // Remove null values to let DB defaults apply if any
     const cleanPayload = Object.fromEntries(
-      Object.entries(payload).filter(([_, v]) => v !== null)
+      Object.entries(payload).filter(([, v]) => v !== null)
     );
 
     const { error } = await supabase.from('waitlist').insert(cleanPayload);
