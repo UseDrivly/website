@@ -11,6 +11,7 @@ export async function POST(request: Request) {
       email, 
       phone, 
       role, 
+      address,
       
       // Driver fields
       city, 
@@ -37,10 +38,17 @@ export async function POST(request: Request) {
 
     const normalizedRole = String(role).trim().toLowerCase();
     const normalizedServiceType = typeof service_type === 'string' ? service_type.trim() : '';
+    const normalizedAddress = typeof address === 'string' ? address.trim() : '';
 
     if (normalizedRole === 'provider' && !normalizedServiceType) {
       return NextResponse.json(
         { error: 'Service type is required for providers.' },
+        { status: 400 }
+      );
+    }
+    if (normalizedRole === 'provider' && !normalizedAddress) {
+      return NextResponse.json(
+        { error: 'Address is required for providers.' },
         { status: 400 }
       );
     }
@@ -55,6 +63,7 @@ export async function POST(request: Request) {
       role: normalizedRole,
       
       // Optional fields
+      address: normalizedAddress || null,
       city: city?.trim() ?? null,
       state: state?.trim() ?? null,
       company: company?.trim() ?? null,

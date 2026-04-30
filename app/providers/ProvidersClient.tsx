@@ -54,6 +54,7 @@ function ProviderForm() {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [service, setService] = useState('');
+  const [address, setAddress] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   const inputStyle: React.CSSProperties = { background: '#F7FAF2', border: '1.5px solid #D8E8D0', borderRadius: '10px', height: '44.5px', width: '100%', padding: '0 14px', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 300, fontSize: '15px', color: '#333', outline: 'none', boxSizing: 'border-box' };
@@ -66,7 +67,7 @@ function ProviderForm() {
       const res = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, phone, email, role: 'provider', service_type: service }),
+        body: JSON.stringify({ name, phone, email, address, role: 'provider', service_type: service }),
       });
       setStatus(res.ok ? 'success' : 'error');
     } catch {
@@ -104,6 +105,10 @@ function ProviderForm() {
           <div style={{ marginBottom: '16px' }}>
             <label style={labelStyle}>Email address</label>
             <input style={inputStyle} type="email" placeholder="emeka@email.com" value={email} onChange={e => setEmail(e.target.value)} required />
+          </div>
+          <div style={{ marginBottom: '16px' }}>
+            <label style={labelStyle}>Address</label>
+            <input style={inputStyle} placeholder="Your address" value={address} onChange={e => setAddress(e.target.value)} required />
           </div>
           <div style={{ marginBottom: '28px' }}>
             <label style={labelStyle}>Service type</label>

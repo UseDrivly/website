@@ -56,6 +56,7 @@ export async function submitWaitlist(
     const city = (getValue('city') ?? '').trim();
     const vehicle_type = (getValue('vehicle_type') ?? '').trim();
     const service_type = (getValue('service_type') ?? '').trim();
+    const address = (getValue('address') ?? '').trim();
     const company_name = (getValue('company_name') ?? '').trim();
     const fleet_size = (getValue('fleet_size') ?? '').trim();
 
@@ -72,6 +73,12 @@ export async function submitWaitlist(
         error: 'Service type is required for providers.',
       };
     }
+    if (role === 'provider' && !address) {
+      return {
+        success: false,
+        error: 'Address is required for providers.',
+      };
+    }
 
     const supabase = await createSupabaseServerClient();
 
@@ -86,6 +93,7 @@ export async function submitWaitlist(
 
     if (vehicle_type) payload.vehicle_type = vehicle_type;
     if (service_type) payload.service_type = service_type;
+    if (address) payload.address = address;
     if (company_name) payload.company = company_name;
     if (fleet_size) payload.fleet_size = fleet_size;
 

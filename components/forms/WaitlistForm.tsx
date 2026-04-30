@@ -43,6 +43,7 @@ export default function WaitlistForm({ config }: WaitlistFormProps) {
       role:          config.role,
       vehicle_type:  values.vehicle_type,
       service_type:  values.service_type,
+      address:       values.address,
       company_name:  values.company_name,
       fleet_size:    values.fleet_size,
     };

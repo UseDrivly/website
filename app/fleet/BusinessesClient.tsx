@@ -68,6 +68,7 @@ function BusinessForm() {
   const [company, setCompany] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
   const [state, setState] = useState('');
   const [bizType, setBizType] = useState('');
   const [message, setMessage] = useState('');
@@ -80,7 +81,7 @@ function BusinessForm() {
   async function submit(e: React.FormEvent) {
     e.preventDefault(); setStatus('loading');
     try {
-      const res = await fetch('/api/waitlist', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, company, email, phone, state, business_type: bizType, message, role: 'business' }) });
+      const res = await fetch('/api/waitlist', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, company, email, phone, address, state, business_type: bizType, message, role: 'business' }) });
       setStatus(res.ok ? 'success' : 'error');
     } catch { setStatus('error'); }
   }
@@ -108,6 +109,7 @@ function BusinessForm() {
           <div style={fld}><label style={lbl}>Company name</label><input style={inp} placeholder="Your company name" value={company} onChange={e => setCompany(e.target.value)} required /></div>
           <div style={fld}><label style={lbl}>Company email</label><input style={inp} type="email" placeholder="Your company email" value={email} onChange={e => setEmail(e.target.value)} required /></div>
           <div style={fld}><label style={lbl}>Phone number</label><input style={inp} placeholder="+234 800 000 0000" value={phone} onChange={e => setPhone(e.target.value)} required /></div>
+          <div style={fld}><label style={lbl}>Address</label><input style={inp} placeholder="Company address" value={address} onChange={e => setAddress(e.target.value)} required /></div>
           <div style={fld}><label style={lbl}>State</label>
             <select style={{ ...inp, appearance: 'none' }} value={state} onChange={e => setState(e.target.value)}>
               <option value="">Select state</option>

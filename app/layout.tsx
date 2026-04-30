@@ -62,6 +62,11 @@ export const metadata: Metadata = {
       'max-image-preview': 'large',
     },
   },
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
 };
 
 export const viewport: Viewport = {

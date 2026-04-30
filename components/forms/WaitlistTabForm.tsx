@@ -39,9 +39,15 @@ export default function WaitlistTabForm({ id }: WaitlistTabFormProps) {
 
     if (role === 'provider') {
       const serviceType = String(formData.get('service_type') ?? '').trim();
+      const address = String(formData.get('address') ?? '').trim();
       if (!serviceType) {
         setStatus('error');
         setMessage('Service type is required for providers.');
+        return;
+      }
+      if (!address) {
+        setStatus('error');
+        setMessage('Address is required for providers.');
         return;
       }
     }
@@ -226,6 +232,18 @@ export default function WaitlistTabForm({ id }: WaitlistTabFormProps) {
                 name="service_type"
                 type="text"
                 placeholder="e.g. Towing, Tyre repair, Battery jumpstart"
+                required
+                style={inputStyle}
+              />
+            </div>
+          )}
+          {role === 'provider' && (
+            <div>
+              {fieldLabel('Address')}
+              <input
+                name="address"
+                type="text"
+                placeholder="Your address"
                 required
                 style={inputStyle}
               />

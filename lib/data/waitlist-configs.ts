@@ -43,6 +43,7 @@ export const providerWaitlistConfig: WaitlistFormConfig = {
     { id: 'email',        label: 'Email address',    type: 'email',  placeholder: 'you@example.com',              required: true },
     { id: 'phone',        label: 'Phone number',     type: 'tel',    placeholder: '+234 800 000 0000',            required: true },
     { id: 'city',         label: 'City',             type: 'text',   placeholder: 'e.g. Lagos, Abuja',            required: true },
+    { id: 'address',      label: 'Address',          type: 'text',   placeholder: 'Your address',                 required: true },
     {
       id: 'service_type',
       label: 'Service type',

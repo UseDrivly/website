@@ -14,10 +14,11 @@ CREATE TABLE IF NOT EXISTS public.waitlist (
   -- Driver specific
   city TEXT,
   vehicle_type TEXT,
-  
+
   -- Provider specific
   service_type TEXT,
-  
+  address TEXT,
+
   -- Business specific
   company TEXT,
   state TEXT,
@@ -28,12 +29,24 @@ CREATE TABLE IF NOT EXISTS public.waitlist (
   created_at TIMESTAMPTZ DEFAULT now() NOT NULL
 );
 
+-- Ensure new columns exist when table already created
+ALTER TABLE public.waitlist
+  ADD COLUMN IF NOT EXISTS address TEXT;
+
 -- Enforce: provider rows must include service_type
 ALTER TABLE public.waitlist
   ADD CONSTRAINT waitlist_provider_service_type_required
   CHECK (
     role <> 'provider'
     OR (service_type IS NOT NULL AND btrim(service_type) <> '')
+  );
+
+-- Enforce: provider rows must include address
+ALTER TABLE public.waitlist
+  ADD CONSTRAINT waitlist_provider_address_required
+  CHECK (
+    role <> 'provider'
+    OR (address IS NOT NULL AND btrim(address) <> '')
   );
 
 -- 2. Create Career Applications Table
