@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import Container from './Container';
 
 const footerSections = [
@@ -81,12 +82,10 @@ export default function Footer() {
       <Container width="wide" className="py-14">
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-[420px_1fr_1fr_1fr] lg:gap-16">
           {/* Column 1 — Brand */}
-          <div className="flex flex-col gap-5">
-            <div className="text-[30px] font-extrabold tracking-[-0.5px] text-[#7AB800]">
-              Drivly
-            </div>
+          <div className="flex flex-col gap-4">
+            <Image src="/drivly-logo.svg" alt="Drivly" width={150} height={44} priority />
 
-            <p className="max-w-[320px] text-[14px] leading-[1.65] text-white/70">
+            <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '14px', lineHeight: '1.6', color: 'rgba(255,255,255,0.7)', maxWidth: '280px' }}>
               Nigeria&apos;s first app-based roadside assistance platform. Verified providers. Fixed pricing. Real-time tracking. Launching in Lagos 2026.
             </p>
 

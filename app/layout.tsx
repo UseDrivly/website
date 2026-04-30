@@ -62,11 +62,6 @@ export const metadata: Metadata = {
       'max-image-preview': 'large',
     },
   },
-  icons: {
-    icon: '/drivly-logo.svg',
-    shortcut: '/drivly-logo.svg',
-    apple: '/drivly-logo.svg',
-  },
 };
 
 export const viewport: Viewport = {
