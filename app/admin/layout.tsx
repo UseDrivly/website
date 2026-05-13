@@ -12,6 +12,7 @@ const navItems = [
   { name: 'Jobs', href: '/admin/jobs', icon: '💼' },
   { name: 'Careers', href: '/admin/careers', icon: '👥' },
   { name: 'Blog', href: '/admin/blog', icon: '✍️' },
+  { name: 'Settings', href: '/admin/settings', icon: '⚙️' },
 ];
 
 export default function AdminLayout({

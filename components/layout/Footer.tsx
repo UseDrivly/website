@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Container from './Container';
+import { getSettingsValue } from '@/lib/settings';
 
 const footerSections = [
   {
@@ -74,8 +75,18 @@ const socialLinks = [
  * Footer — dark green background, 4-column layout.
  * Columns: Logo+tagline+social | Platform | Company | Contact
  */
-export default function Footer() {
+export default async function Footer() {
   const currentYear = new Date().getFullYear();
+  const customSocialLinks = await getSettingsValue('social_media') || {};
+
+  const activeSocialLinks = socialLinks.map(social => {
+    let href = social.href;
+    if (social.label === 'Twitter / X' && customSocialLinks.twitter !== undefined) href = customSocialLinks.twitter;
+    if (social.label === 'Facebook' && customSocialLinks.facebook !== undefined) href = customSocialLinks.facebook;
+    if (social.label === 'Instagram' && customSocialLinks.instagram !== undefined) href = customSocialLinks.instagram;
+    if (social.label === 'LinkedIn' && customSocialLinks.linkedin !== undefined) href = customSocialLinks.linkedin;
+    return { ...social, href };
+  }).filter(social => social.href);
 
   return (
     <footer className="bg-[#0E1510] text-white" role="contentinfo">
@@ -90,7 +101,7 @@ export default function Footer() {
             </p>
 
             <div className="mt-1 flex items-center gap-3" aria-label="Social media links">
-              {socialLinks.map((social) => (
+              {activeSocialLinks.map((social) => (
                 <a
                   key={social.label}
                   href={social.href}
