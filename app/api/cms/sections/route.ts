@@ -4,12 +4,15 @@ import { NextRequest, NextResponse } from 'next/server';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(request: NextRequest) {
   try {
-    const { id } = await params;
+    const { searchParams } = new URL(request.url);
+    const pageId = searchParams.get('page_id');
+    
+    if (!pageId) {
+      return NextResponse.json({ error: 'Page ID is required' }, { status: 400 });
+    }
+
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     const { data, error } = await supabase
@@ -18,7 +21,7 @@ export async function GET(
         *,
         content_blocks (*)
       `)
-      .eq('page_id', id)
+      .eq('page_id', pageId)
       .order('order_index', { ascending: true });
 
     if (error) {
