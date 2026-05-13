@@ -15,28 +15,36 @@ export async function GET(request: NextRequest) {
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const { data, error } = await supabase
+    // Fetch sections
+    const { data: sections, error: sectionsError } = await supabase
       .from('cms_sections')
-      .select(`
-        *,
-        content_blocks (*)
-      `)
+      .select('*')
       .eq('page_id', pageId)
       .order('order_index', { ascending: true });
 
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+    if (sectionsError) {
+      return NextResponse.json({ error: sectionsError.message }, { status: 500 });
     }
 
-    // Sort content blocks within each section
-    const sortedSections = data?.map(section => ({
+    // Fetch content blocks for all sections
+    const sectionIds = sections?.map(s => s.id) || [];
+    const { data: contentBlocks, error: blocksError } = await supabase
+      .from('cms_content_blocks')
+      .select('*')
+      .in('section_id', sectionIds)
+      .order('order_index', { ascending: true });
+
+    if (blocksError) {
+      return NextResponse.json({ error: blocksError.message }, { status: 500 });
+    }
+
+    // Combine sections with their content blocks
+    const sectionsWithBlocks = sections?.map(section => ({
       ...section,
-      content_blocks: section.content_blocks?.sort((a: any, b: any) => 
-        a.order_index - b.order_index
-      ) || []
+      content_blocks: contentBlocks?.filter(block => block.section_id === section.id) || []
     })) || [];
 
-    return NextResponse.json(sortedSections);
+    return NextResponse.json(sectionsWithBlocks);
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
