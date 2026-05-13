@@ -128,3 +128,26 @@ export async function submitWaitlist(
     };
   }
 }
+
+export async function getWaitlistEntries(roleFilter?: string | null) {
+  try {
+    const supabase = await createSupabaseServerClient();
+    let query = supabase.from('waitlist').select('*').order('created_at', { ascending: false });
+
+    if (roleFilter && ['driver', 'provider', 'business'].includes(roleFilter)) {
+      query = query.eq('role', roleFilter);
+    }
+
+    const { data, error } = await query;
+    
+    if (error) {
+      console.error('[getWaitlistEntries] error:', error);
+      return [];
+    }
+    
+    return data || [];
+  } catch (error) {
+    console.error('[getWaitlistEntries] unexpected error:', error);
+    return [];
+  }
+}

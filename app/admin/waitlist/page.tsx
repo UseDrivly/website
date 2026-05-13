@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
-import { createClient } from '@supabase/supabase-js';
+import { getWaitlistEntries } from '@/actions/waitlist';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import ExportButton from './ExportButton';
@@ -18,22 +18,12 @@ function AdminWaitlistContent() {
 
   const fetchEntries = async () => {
     setLoading(true);
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    let query = supabase.from('waitlist').select('*').order('created_at', { ascending: false });
-
-    if (roleFilter && ['driver', 'provider', 'business'].includes(roleFilter)) {
-      query = query.eq('role', roleFilter);
-    }
-
-    const { data, error } = await query;
-
-    if (error) {
-      console.error('Error fetching waitlist:', error);
-    } else {
+    try {
+      const data = await getWaitlistEntries(roleFilter);
       setEntries(data || []);
+    } catch (error) {
+      console.error('Error fetching waitlist:', error);
+      setEntries([]);
     }
     setLoading(false);
   };
