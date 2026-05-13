@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import Link from 'next/link';
+import ExportButton from './ExportButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,10 +34,15 @@ export default async function AdminWaitlist({
     { label: 'Businesses', value: 'business' },
   ];
 
+  const exportFilename = roleFilter ? `${roleFilter}-waitlist` : 'all-waitlist';
+
   return (
     <div className="bg-white rounded-2xl border border-[#D8E8D0] shadow-sm flex flex-col h-full">
       <div className="p-6 border-b border-[#D8E8D0]">
-        <h2 className="text-xl font-bold text-[#0D3D21] mb-4">Waitlist Entries</h2>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold text-[#0D3D21]">Waitlist Entries</h2>
+          <ExportButton data={entries || []} filename={exportFilename} />
+        </div>
         
         {/* Tabs */}
         <div className="flex gap-2">
