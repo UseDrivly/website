@@ -50,9 +50,9 @@ export default function ContentManagementPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-[#0D3D21]">Content Management</h1>
+    <div className="max-w-7xl mx-auto p-4 sm:p-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#0D3D21]">Content Management</h1>
         <button
           onClick={() => {
             const slug = prompt('Enter page slug (e.g., home, drivers, providers):');
@@ -63,29 +63,29 @@ export default function ContentManagementPage() {
               }
             }
           }}
-          className="bg-[#7AB800] text-white px-4 py-2 rounded-lg hover:bg-[#5F9908] transition-colors"
+          className="bg-[#7AB800] text-white px-4 py-2 rounded-lg hover:bg-[#5F9908] transition-colors w-full sm:w-auto"
         >
           + Add New Page
         </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8">
         {/* Pages List */}
-        <div className="bg-white rounded-2xl p-6 border border-[#D8E8D0] shadow-sm">
-          <h2 className="text-xl font-bold text-[#0D3D21] mb-4">Pages</h2>
+        <div className="bg-white rounded-2xl p-4 sm:p-6 border border-[#D8E8D0] shadow-sm">
+          <h2 className="text-lg sm:text-xl font-bold text-[#0D3D21] mb-4">Pages</h2>
           <div className="space-y-2">
             {pages.map((page) => (
               <button
                 key={page.id}
                 onClick={() => fetchPageContent(page.id)}
-                className={`w-full text-left p-4 rounded-lg border transition-colors ${
+                className={`w-full text-left p-3 sm:p-4 rounded-lg border transition-colors ${
                   selectedPage?.id === page.id
                     ? 'bg-[#F7FAF2] border-[#7AB800]'
                     : 'bg-white border-[#D8E8D0] hover:bg-[#F7FAF2]'
                 }`}
               >
-                <div className="font-semibold text-[#0D3D21]">{page.title}</div>
-                <div className="text-sm text-[#8FA489]">/{page.slug}</div>
+                <div className="font-semibold text-[#0D3D21] text-sm sm:text-base">{page.title}</div>
+                <div className="text-xs sm:text-sm text-[#8FA489]">/{page.slug}</div>
               </button>
             ))}
           </div>
@@ -93,13 +93,13 @@ export default function ContentManagementPage() {
 
         {/* Page Content Editor */}
         {selectedPage && (
-          <div className="lg:col-span-2 bg-white rounded-2xl p-6 border border-[#D8E8D0] shadow-sm">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold text-[#0D3D21]">{selectedPage.title}</h2>
+          <div className="lg:col-span-2 bg-white rounded-2xl p-4 sm:p-6 border border-[#D8E8D0] shadow-sm">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+              <h2 className="text-lg sm:text-xl font-bold text-[#0D3D21]">{selectedPage.title}</h2>
               <Link
                 href={`/${selectedPage.slug}`}
                 target="_blank"
-                className="text-[#7AB800] hover:underline"
+                className="text-[#7AB800] hover:underline text-sm"
               >
                 View Page →
               </Link>
@@ -192,6 +192,33 @@ function ContentBlockEditor({ block, onUpdate }: { block: any; onUpdate: () => v
   const [value, setValue] = useState(
     block.block_type === 'json' ? JSON.stringify(block.content_json, null, 2) : block.content || block.image_url || ''
   );
+  const [uploading, setUploading] = useState(false);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const res = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error('Upload failed');
+
+      const data = await res.json();
+      setValue(data.url);
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      alert('Error uploading file');
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleSave = async () => {
     try {
@@ -200,6 +227,7 @@ function ContentBlockEditor({ block, onUpdate }: { block: any; onUpdate: () => v
         updateData.content_json = JSON.parse(value);
       } else if (block.block_type === 'image') {
         updateData.image_url = value;
+        updateData.image_alt = block.image_alt || '';
       } else {
         updateData.content = value;
       }
@@ -239,7 +267,7 @@ function ContentBlockEditor({ block, onUpdate }: { block: any; onUpdate: () => v
 
   return (
     <div className="bg-[#F7FAF2] rounded-lg p-3">
-      <div className="flex justify-between items-center mb-2">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2">
         <span className="text-xs font-semibold text-[#8FA489] uppercase">
           {block.block_key} ({block.block_type})
         </span>
@@ -286,6 +314,26 @@ function ContentBlockEditor({ block, onUpdate }: { block: any; onUpdate: () => v
             className="w-full p-2 border border-[#D8E8D0] rounded font-mono text-sm"
             rows={6}
           />
+        ) : block.block_type === 'image' ? (
+          <div className="space-y-2">
+            <input
+              type="text"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              placeholder="Or enter image URL"
+              className="w-full p-2 border border-[#D8E8D0] rounded text-sm"
+            />
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-[#8FA489]">Or upload:</span>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileUpload}
+                className="text-xs"
+              />
+              {uploading && <span className="text-xs text-[#7AB800]">Uploading...</span>}
+            </div>
+          </div>
         ) : (
           <input
             type="text"

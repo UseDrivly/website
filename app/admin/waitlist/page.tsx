@@ -1,31 +1,42 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import ExportButton from './ExportButton';
 
-export const dynamic = 'force-dynamic';
+export default function AdminWaitlist() {
+  const searchParams = useSearchParams();
+  const roleFilter = searchParams.get('role');
+  const [entries, setEntries] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-export default async function AdminWaitlist({
-  searchParams,
-}: {
-  searchParams: { role?: string };
-}) {
-  const roleFilter = searchParams.role;
+  useEffect(() => {
+    fetchEntries();
+  }, [roleFilter]);
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  const supabase = createClient(supabaseUrl, supabaseKey);
+  const fetchEntries = async () => {
+    setLoading(true);
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
-  let query = supabase.from('waitlist').select('*').order('created_at', { ascending: false });
+    let query = supabase.from('waitlist').select('*').order('created_at', { ascending: false });
 
-  if (roleFilter && ['driver', 'provider', 'business'].includes(roleFilter)) {
-    query = query.eq('role', roleFilter);
-  }
+    if (roleFilter && ['driver', 'provider', 'business'].includes(roleFilter)) {
+      query = query.eq('role', roleFilter);
+    }
 
-  const { data: entries, error } = await query;
+    const { data, error } = await query;
 
-  if (error) {
-    console.error('Error fetching waitlist:', error);
-  }
+    if (error) {
+      console.error('Error fetching waitlist:', error);
+    } else {
+      setEntries(data || []);
+    }
+    setLoading(false);
+  };
 
   const tabs = [
     { label: 'All', value: undefined },
@@ -36,16 +47,24 @@ export default async function AdminWaitlist({
 
   const exportFilename = roleFilter ? `${roleFilter}-waitlist` : 'all-waitlist';
 
+  if (loading) {
+    return (
+      <div className="bg-white rounded-2xl border border-[#D8E8D0] shadow-sm flex flex-col h-full p-8">
+        <div className="text-center text-[#4A5E46]">Loading...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white rounded-2xl border border-[#D8E8D0] shadow-sm flex flex-col h-full">
       <div className="p-6 border-b border-[#D8E8D0]">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
           <h2 className="text-xl font-bold text-[#0D3D21]">Waitlist Entries</h2>
           <ExportButton data={entries || []} filename={exportFilename} />
         </div>
         
         {/* Tabs */}
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {tabs.map((tab) => {
             const isActive = tab.value === roleFilter;
             return (
@@ -66,7 +85,8 @@ export default async function AdminWaitlist({
       </div>
 
       <div className="flex-1 overflow-auto p-0">
-        <table className="w-full text-left text-sm text-[#333]">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm text-[#333] min-w-[800px]">
           <thead className="bg-[#F7FAF2] text-[#8FA489] uppercase text-xs sticky top-0">
             <tr>
               <th className="px-6 py-4 font-semibold">Name</th>
@@ -118,6 +138,7 @@ export default async function AdminWaitlist({
             )}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );
