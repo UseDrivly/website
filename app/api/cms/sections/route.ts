@@ -6,9 +6,10 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.NEXT_PU
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     const { data, error } = await supabase
@@ -17,7 +18,7 @@ export async function GET(
         *,
         content_blocks (*)
       `)
-      .eq('page_id', params.id)
+      .eq('page_id', id)
       .order('order_index', { ascending: true });
 
     if (error) {
