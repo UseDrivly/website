@@ -28,6 +28,12 @@ export default function ContentManagementPage() {
   const fetchPageContent = async (pageId: string) => {
     try {
       const res = await fetch(`/api/cms/sections?page_id=${pageId}`);
+      if (!res.ok) {
+        const errorData = await res.json();
+        console.error('Error fetching page content:', errorData);
+        alert(`Error: ${errorData.error || 'Failed to fetch page content'}`);
+        return;
+      }
       const data = await res.json();
       const page = pages.find(p => p.id === pageId);
       if (page) {
@@ -35,6 +41,7 @@ export default function ContentManagementPage() {
       }
     } catch (error) {
       console.error('Error fetching page content:', error);
+      alert('Error fetching page content. Check console for details.');
     }
   };
 
