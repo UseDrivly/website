@@ -7,9 +7,10 @@ import { logoutAdmin } from '@/actions/admin';
 
 const navItems = [
   { name: 'Dashboard', href: '/admin', icon: '📊' },
+  { name: 'Content', href: '/admin/content', icon: '📝' },
   { name: 'Waitlist', href: '/admin/waitlist', icon: '📋' },
   { name: 'Jobs', href: '/admin/jobs', icon: '💼' },
-  { name: 'Careers', href: '/admin/careers', icon: '�' },
+  { name: 'Careers', href: '/admin/careers', icon: '👥' },
   { name: 'Blog', href: '/admin/blog', icon: '✍️' },
 ];
 

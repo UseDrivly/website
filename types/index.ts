@@ -53,12 +53,11 @@ export interface WaitlistEntry extends WaitlistFormData {
 }
 
 export interface WaitlistFieldConfig {
-  id: keyof WaitlistFormData;
+  key: keyof WaitlistFormData;
   label: string;
   type: 'text' | 'email' | 'tel' | 'select';
-  placeholder?: string;
+  options?: string[];
   required: boolean;
-  options?: { value: string; label: string }[];
 }
 
 export interface WaitlistFormConfig {
@@ -138,4 +137,59 @@ export interface ActionResponse {
   success: boolean;
   error?: string;
   message?: string;
+}
+
+// ------------------------------------------------------------------
+// CMS (Content Management System)
+// ------------------------------------------------------------------
+export interface CMSPage {
+  id: string;
+  slug: string;
+  title: string;
+  description: string | null;
+  is_published: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CMSSection {
+  id: string;
+  page_id: string;
+  section_key: string;
+  title: string | null;
+  order_index: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export type CMSBlockType = 'text' | 'image' | 'stat' | 'service' | 'industry' | 'step' | 'json';
+
+export interface CMSContentBlock {
+  id: string;
+  section_id: string;
+  block_key: string;
+  block_type: CMSBlockType;
+  content: string | null;
+  content_json: Record<string, any> | null;
+  image_url: string | null;
+  image_alt: string | null;
+  order_index: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CMSImage {
+  id: string;
+  filename: string;
+  url: string;
+  alt: string | null;
+  width: number | null;
+  height: number | null;
+  mime_type: string | null;
+  file_size: number | null;
+  created_at: string;
+}
+
+export interface CMSPageWithSections extends CMSPage {
+  sections: (CMSSection & { content_blocks: CMSContentBlock[] })[];
 }
