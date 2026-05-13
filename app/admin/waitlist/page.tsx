@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import ExportButton from './ExportButton';
 
-export default function AdminWaitlist() {
+function AdminWaitlistContent() {
   const searchParams = useSearchParams();
   const roleFilter = searchParams.get('role');
   const [entries, setEntries] = useState<any[]>([]);
@@ -141,5 +141,13 @@ export default function AdminWaitlist() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AdminWaitlist() {
+  return (
+    <Suspense fallback={<div className="bg-white rounded-2xl border border-[#D8E8D0] shadow-sm flex flex-col h-full p-8"><div className="text-center text-[#4A5E46]">Loading...</div></div>}>
+      <AdminWaitlistContent />
+    </Suspense>
   );
 }
