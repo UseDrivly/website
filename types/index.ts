@@ -53,10 +53,11 @@ export interface WaitlistEntry extends WaitlistFormData {
 }
 
 export interface WaitlistFieldConfig {
-  key: keyof WaitlistFormData;
+  id: keyof WaitlistFormData;
   label: string;
   type: 'text' | 'email' | 'tel' | 'select';
-  options?: string[];
+  placeholder?: string;
+  options?: { value: string; label: string }[];
   required: boolean;
 }
 
