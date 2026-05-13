@@ -150,7 +150,7 @@ export default function ContentManagementPage() {
                           <ContentBlockEditor
                             key={block.id}
                             block={block}
-                            onUpdate={fetchPageContent}
+                            onUpdate={() => fetchPageContent(selectedPage.id)}
                           />
                         ))}
                         <button
