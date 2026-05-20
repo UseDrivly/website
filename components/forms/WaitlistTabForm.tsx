@@ -32,21 +32,13 @@ export default function WaitlistTabForm({ id }: WaitlistTabFormProps) {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash;
-      if (hash.includes('provider')) {
-        setRole('provider');
-      } else if (hash.includes('driver')) {
-        setRole('driver');
-      }
-    };
-    
-    // Set initial state based on URL
-    handleHashChange();
-    
-    // Listen for hash changes from CTA buttons
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    // Set initial state based on URL hash only on mount
+    const hash = window.location.hash;
+    if (hash.includes('provider')) {
+      setRole('provider');
+    } else if (hash.includes('driver')) {
+      setRole('driver');
+    }
   }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
