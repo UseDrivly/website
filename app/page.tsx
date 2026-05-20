@@ -169,7 +169,7 @@ export default async function HomePage() {
             <div className="flex flex-wrap gap-[10px]">
               {/* Primary: dark green */}
               <Link
-                href="/#waitlist"
+                href="#waitlist-driver"
                 id="hero-driver-cta"
                 className="w-full sm:w-[286px] transition-opacity duration-200 hover:opacity-90"
                 style={{
@@ -183,7 +183,7 @@ export default async function HomePage() {
                 I&apos;m a Driver – Join the Waitlist
               </Link>
               {/* Secondary: border only */}
-              <Link href="/#waitlist" id="hero-provider-cta" className="w-full sm:w-[246px]" style={{
+              <Link href="#waitlist-provider" id="hero-provider-cta" className="w-full sm:w-[246px]" style={{
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                 height: '48px',
                 background: 'transparent', border: '1px solid #DCDCDC', borderRadius: '12px',

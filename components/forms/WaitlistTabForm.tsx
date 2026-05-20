@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useTransition } from 'react';
+import React, { useState, useTransition, useEffect } from 'react';
 import { submitWaitlist } from '@/actions/waitlist';
 
 const ArrowRight = ({ size = 20, color = 'currentColor', strokeWidth = 1.5 }: { size?: number; color?: string; strokeWidth?: number }) => (
@@ -30,6 +30,24 @@ export default function WaitlistTabForm({ id }: WaitlistTabFormProps) {
   const [isPending, startTransition] = useTransition();
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      if (hash.includes('provider')) {
+        setRole('provider');
+      } else if (hash.includes('driver')) {
+        setRole('driver');
+      }
+    };
+    
+    // Set initial state based on URL
+    handleHashChange();
+    
+    // Listen for hash changes from CTA buttons
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -149,7 +167,11 @@ export default function WaitlistTabForm({ id }: WaitlistTabFormProps) {
           <button
             key={r}
             type="button"
-            onClick={() => { setRole(r); setStatus('idle'); }}
+            onClick={(e) => { 
+              e.preventDefault();
+              setRole(r); 
+              setStatus('idle'); 
+            }}
             style={{
               flex: 1,
               height: '35.5px',
@@ -163,6 +185,9 @@ export default function WaitlistTabForm({ id }: WaitlistTabFormProps) {
               lineHeight: '16px',
               color: role === r ? '#FFFFFF' : '#8FA489',
               transition: 'all 0.15s',
+              position: 'relative',
+              zIndex: 10,
+              pointerEvents: 'auto',
             }}
           >
             {r === 'driver' ? `I'm a Driver` : `I'm a Provider`}
