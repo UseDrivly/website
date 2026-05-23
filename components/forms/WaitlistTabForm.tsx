@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useTransition, useEffect } from 'react';
+import React, { useState, useTransition, useEffect, useRef } from 'react';
 import { submitWaitlist } from '@/actions/waitlist';
 
 const ArrowRight = ({ size = 20, color = 'currentColor', strokeWidth = 1.5 }: { size?: number; color?: string; strokeWidth?: number }) => (
@@ -12,34 +12,33 @@ const ArrowRight = ({ size = 20, color = 'currentColor', strokeWidth = 1.5 }: { 
 type Role = 'driver' | 'provider';
 
 interface WaitlistTabFormProps {
-  /** Form card ID for anchor links */
   id?: string;
 }
 
-/**
- * WaitlistTabForm — the tabbed Driver / Provider form card.
- * Matches Figma spec exactly:
- * - Toggle bar: #F0F5EA bg, active tab #0D3D21 dark green
- * - Fields: Full name, Phone number, Email address
- * - Submit: #7AB800 action green button with shadow
- * - Label text: uppercase, 11px, #8FA489 sage
- * - Input bg: #F7FAF2, border #D8E8D0
- */
 export default function WaitlistTabForm({ id }: WaitlistTabFormProps) {
   const [role, setRole] = useState<Role>('driver');
   const [isPending, startTransition] = useTransition();
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
+  const formRef = useRef<HTMLFormElement>(null);
 
+  // Listen to hash changes so external CTA links can pre-select a tab
   useEffect(() => {
-    // Set initial state based on URL hash only on mount
-    const hash = window.location.hash;
-    if (hash.includes('provider')) {
-      setRole('provider');
-    } else if (hash.includes('driver')) {
-      setRole('driver');
-    }
+    const syncFromHash = () => {
+      const hash = window.location.hash;
+      if (hash.includes('provider')) setRole('provider');
+      else if (hash.includes('driver')) setRole('driver');
+    };
+    syncFromHash();
+    window.addEventListener('hashchange', syncFromHash);
+    return () => window.removeEventListener('hashchange', syncFromHash);
   }, []);
+
+  const switchRole = (r: Role) => {
+    setRole(r);
+    setStatus('idle');
+    setMessage('');
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -50,16 +49,8 @@ export default function WaitlistTabForm({ id }: WaitlistTabFormProps) {
     if (role === 'provider') {
       const serviceType = String(formData.get('service_type') ?? '').trim();
       const address = String(formData.get('address') ?? '').trim();
-      if (!serviceType) {
-        setStatus('error');
-        setMessage('Service type is required for providers.');
-        return;
-      }
-      if (!address) {
-        setStatus('error');
-        setMessage('Address is required for providers.');
-        return;
-      }
+      if (!serviceType) { setStatus('error'); setMessage('Service type is required for providers.'); return; }
+      if (!address) { setStatus('error'); setMessage('Address is required for providers.'); return; }
     }
 
     startTransition(async () => {
@@ -75,10 +66,11 @@ export default function WaitlistTabForm({ id }: WaitlistTabFormProps) {
     });
   };
 
-  const fieldLabel = (text: string) => (
+  const fieldLabel = (text: string, htmlFor?: string) => (
     <label
-      className="block uppercase"
+      htmlFor={htmlFor}
       style={{
+        display: 'block',
         fontFamily: 'Helvetica Neue, Inter, sans-serif',
         fontWeight: 400,
         fontSize: '11px',
@@ -86,7 +78,7 @@ export default function WaitlistTabForm({ id }: WaitlistTabFormProps) {
         letterSpacing: '0.88px',
         color: '#8FA489',
         marginBottom: '4px',
-        textAlign: 'left',
+        textTransform: 'uppercase',
       }}
     >
       {text}
@@ -102,19 +94,18 @@ export default function WaitlistTabForm({ id }: WaitlistTabFormProps) {
     fontFamily: 'Helvetica Neue, Inter, sans-serif',
     fontWeight: 300,
     fontSize: '15px',
-    lineHeight: '18px',
     color: '#111810',
     paddingLeft: '14.5px',
     paddingRight: '14.5px',
     outline: 'none',
     transition: 'border-color 0.15s',
+    boxSizing: 'border-box',
   };
 
   if (status === 'success') {
     return (
       <div
         id={id}
-        className="flex flex-col items-center justify-center text-center"
         style={{
           background: '#FFFFFF',
           border: '1.5px solid #D8E8D0',
@@ -122,11 +113,16 @@ export default function WaitlistTabForm({ id }: WaitlistTabFormProps) {
           borderRadius: '20px',
           padding: '48px 32px',
           minHeight: '300px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center',
         }}
       >
-        <div className="text-4xl mb-4">🎉</div>
-        <p className="font-semibold text-lg" style={{ color: '#0D3D21' }}>You&apos;re on the list!</p>
-        <p className="mt-2 text-sm" style={{ color: '#4A5E46' }}>{message}</p>
+        <div style={{ fontSize: '40px', marginBottom: '16px' }}>🎉</div>
+        <p style={{ fontWeight: 600, fontSize: '18px', color: '#0D3D21' }}>You&apos;re on the list!</p>
+        <p style={{ marginTop: '8px', fontSize: '14px', color: '#4A5E46' }}>{message}</p>
       </div>
     );
   }
@@ -142,12 +138,13 @@ export default function WaitlistTabForm({ id }: WaitlistTabFormProps) {
         padding: '33.5px 7.98% 40px',
       }}
     >
-      {/* Tab toggle */}
+      {/* ── Tab Toggle — lives OUTSIDE the <form> to prevent event interference ── */}
       <div
+        role="tablist"
+        aria-label="Choose your role"
         style={{
           display: 'flex',
           flexDirection: 'row',
-          alignItems: 'flex-start',
           padding: '4px',
           gap: '4px',
           background: '#F0F5EA',
@@ -158,11 +155,14 @@ export default function WaitlistTabForm({ id }: WaitlistTabFormProps) {
         {(['driver', 'provider'] as Role[]).map((r) => (
           <button
             key={r}
+            role="tab"
+            aria-selected={role === r}
             type="button"
-            onClick={(e) => { 
+            onMouseDown={(e) => {
+              // Use onMouseDown to fire before any focus/blur events
               e.preventDefault();
-              setRole(r); 
-              setStatus('idle'); 
+              e.stopPropagation();
+              switchRole(r);
             }}
             style={{
               flex: 1,
@@ -176,31 +176,21 @@ export default function WaitlistTabForm({ id }: WaitlistTabFormProps) {
               fontSize: '13px',
               lineHeight: '16px',
               color: role === r ? '#FFFFFF' : '#8FA489',
-              transition: 'all 0.15s',
-              position: 'relative',
-              zIndex: 10,
-              pointerEvents: 'auto',
+              transition: 'background 0.15s, color 0.15s',
+              userSelect: 'none',
+              WebkitUserSelect: 'none',
             }}
           >
-            {r === 'driver' ? `I'm a Driver` : `I'm a Provider`}
+            {r === 'driver' ? "I'm a Driver" : "I'm a Provider"}
           </button>
         ))}
       </div>
 
-      {/* Form body */}
-      <form onSubmit={handleSubmit} style={{ textAlign: 'left' }}>
-        {/* Title + subtitle */}
+      {/* ── Form body ── */}
+      <form ref={formRef} onSubmit={handleSubmit} style={{ textAlign: 'left' }} noValidate>
+        {/* Title */}
         <div style={{ marginBottom: '24px' }}>
-          <p
-            style={{
-              fontFamily: 'Helvetica Neue, Inter, sans-serif',
-              fontWeight: 500,
-              fontSize: '18px',
-              lineHeight: '29px',
-              color: '#111810',
-              marginBottom: '4px',
-            }}
-          >
+          <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '18px', lineHeight: '29px', color: '#111810', marginBottom: '4px' }}>
             Get early access
           </p>
           <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '13px', lineHeight: '20px', color: '#4A5E46' }}>
@@ -213,78 +203,45 @@ export default function WaitlistTabForm({ id }: WaitlistTabFormProps) {
         {/* Fields */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div>
-            {fieldLabel('Full name')}
-            <input
-              name="name"
-              type="text"
-              placeholder={role === 'driver' ? 'e.g. Emeka Okafor' : 'e.g. Chidi Eze'}
-              required
-              style={inputStyle}
-            />
+            {fieldLabel('Full name', 'wl-name')}
+            <input id="wl-name" name="name" type="text" placeholder={role === 'driver' ? 'e.g. Emeka Okafor' : 'e.g. Chidi Eze'} required style={inputStyle} />
           </div>
           <div>
-            {fieldLabel('Phone number')}
-            <input
-              name="phone"
-              type="tel"
-              placeholder="+234 800 000 0000"
-              required
-              style={inputStyle}
-            />
+            {fieldLabel('Phone number', 'wl-phone')}
+            <input id="wl-phone" name="phone" type="tel" placeholder="+234 800 000 0000" required style={inputStyle} />
           </div>
           <div>
-            {fieldLabel('Email address')}
-            <input
-              name="email"
-              type="email"
-              placeholder={role === 'driver' ? 'emeka@email.com' : 'chidi@email.com'}
-              required
-              style={inputStyle}
-            />
+            {fieldLabel('Email address', 'wl-email')}
+            <input id="wl-email" name="email" type="email" placeholder={role === 'driver' ? 'emeka@email.com' : 'chidi@email.com'} required style={inputStyle} />
           </div>
           {role === 'provider' && (
             <div>
-              {fieldLabel('Service type')}
-              <input
-                name="service_type"
-                type="text"
-                placeholder="e.g. Towing, Tyre repair, Battery jumpstart"
-                required
-                style={inputStyle}
-              />
+              {fieldLabel('Service type', 'wl-service')}
+              <input id="wl-service" name="service_type" type="text" placeholder="e.g. Towing, Tyre repair, Battery jumpstart" required style={inputStyle} />
             </div>
           )}
           {role === 'provider' && (
             <div>
-              {fieldLabel('Address')}
-              <input
-                name="address"
-                type="text"
-                placeholder="Your address"
-                required
-                style={inputStyle}
-              />
+              {fieldLabel('Address / base location', 'wl-address')}
+              <input id="wl-address" name="address" type="text" placeholder="Your workshop or base location" required style={inputStyle} />
             </div>
           )}
         </div>
 
-        {/* Hidden city field */}
         <input type="hidden" name="city" value="Lagos" />
 
-        {/* Error message */}
         {status === 'error' && (
-          <p className="mt-3 text-sm" style={{ color: '#B91C1C' }}>{message}</p>
+          <p style={{ marginTop: '12px', fontSize: '13px', color: '#B91C1C' }}>{message}</p>
         )}
 
-        {/* Submit button */}
         <button
           type="submit"
           disabled={isPending}
-          className="bg-brand-action hover:bg-brand-action-hover transition-colors duration-200"
           style={{
             marginTop: '24px',
             width: '100%',
             height: '48px',
+            background: '#7AB800',
             boxShadow: '0px 4px 16px rgba(122,184,0,0.3)',
             borderRadius: '12px',
             border: 'none',
@@ -297,31 +254,13 @@ export default function WaitlistTabForm({ id }: WaitlistTabFormProps) {
             transition: 'opacity 0.15s',
           }}
         >
-          <span
-            style={{
-              fontFamily: 'Poppins, Inter, sans-serif',
-              fontWeight: 600,
-              fontSize: '16px',
-              lineHeight: '24px',
-              color: '#0D3D21',
-            }}
-          >
-            {isPending ? 'Submitting…' : 'Join the Waitlist'}
+          <span style={{ fontFamily: 'Poppins, Inter, sans-serif', fontWeight: 600, fontSize: '16px', color: '#0D3D21' }}>
+            {isPending ? 'Submitting…' : role === 'driver' ? 'Join the Waitlist' : 'Apply as Provider'}
           </span>
           {!isPending && <ArrowRight size={20} color="#0D3D21" strokeWidth={1.5} />}
         </button>
 
-        {/* Consent note */}
-        <p
-          className="text-center mt-4"
-          style={{
-            fontFamily: 'Helvetica Neue, Inter, sans-serif',
-            fontWeight: 400,
-            fontSize: '11px',
-            lineHeight: '18px',
-            color: '#8FA489',
-          }}
-        >
+        <p style={{ textAlign: 'center', marginTop: '16px', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '11px', lineHeight: '18px', color: '#8FA489' }}>
           We&apos;ll notify you the moment Drivly launches in your area. No spam, ever.
         </p>
       </form>
