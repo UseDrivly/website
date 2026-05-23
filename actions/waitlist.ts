@@ -93,9 +93,9 @@ export async function submitWaitlist(
 
     if (vehicle_type) payload.vehicle_type = vehicle_type;
     if (service_type) payload.service_type = service_type;
-    if (address) payload.address = address;
     if (company_name) payload.company = company_name;
     if (fleet_size) payload.fleet_size = fleet_size;
+    if (address) payload.message = `Address: ${address}`;
 
     const { error } = await supabase.from('waitlist').insert(payload);
 
