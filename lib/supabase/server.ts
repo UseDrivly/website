@@ -1,4 +1,5 @@
 import { createServerClient } from '@supabase/ssr';
+import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 
 /**
@@ -34,5 +35,21 @@ export async function createSupabaseServerClient() {
         },
       },
     }
+  );
+}
+
+/**
+ * Supabase client for static/public data reads (no cookies).
+ * Use this for:
+ *  - Blog posts (public reads)
+ *  - Public content
+ *  - Static page generation (generateStaticParams, etc.)
+ *
+ * Does NOT use cookies, allowing pages to be statically prerendered.
+ */
+export function createSupabasePublicClient() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 }

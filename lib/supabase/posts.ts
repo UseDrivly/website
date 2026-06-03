@@ -1,4 +1,4 @@
-import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { createSupabasePublicClient } from '@/lib/supabase/server';
 import type { BlogPost } from '@/types';
 
 /**
@@ -44,7 +44,7 @@ interface GetPostsOptions {
  */
 export async function getPosts(options: GetPostsOptions = {}): Promise<BlogPost[]> {
   try {
-    const supabase = await createSupabaseServerClient();
+    const supabase = createSupabasePublicClient();
 
     let query = supabase
       .from('posts')
@@ -80,7 +80,7 @@ export async function getPosts(options: GetPostsOptions = {}): Promise<BlogPost[
  */
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   try {
-    const supabase = await createSupabaseServerClient();
+    const supabase = createSupabasePublicClient();
 
     const { data, error } = await supabase
       .from('posts')
@@ -107,7 +107,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
  */
 export async function getAllPostSlugs(): Promise<string[]> {
   try {
-    const supabase = await createSupabaseServerClient();
+    const supabase = createSupabasePublicClient();
 
     const { data, error } = await supabase
       .from('posts')

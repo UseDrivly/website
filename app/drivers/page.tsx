@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import StatsBar from '@/components/sections/StatsBar';
@@ -406,7 +407,9 @@ export default async function DriversPage() {
 
           {/* Waitlist form card — 759px max width per spec */}
           <div className="w-full" style={{ maxWidth: '759px' }}>
-            <WaitlistTabForm id="drivers-waitlist-form" />
+            <Suspense fallback={<div>Loading form...</div>}>
+              <WaitlistTabForm id="drivers-waitlist-form" />
+            </Suspense>
           </div>
         </div>
       </section>

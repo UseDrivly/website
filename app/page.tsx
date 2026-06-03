@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import StatsBar from '@/components/sections/StatsBar';
@@ -197,7 +198,9 @@ export default async function HomePage() {
 
           {/* ── Right: Waitlist form card ─────────────────── */}
           <div className="w-full lg:w-[421px] flex-shrink-0 mt-[40px] lg:mt-0">
-            <WaitlistTabForm id="hero-form" />
+            <Suspense fallback={<div>Loading form...</div>}>
+              <WaitlistTabForm id="hero-form" />
+            </Suspense>
           </div>
         </Container>
 
@@ -488,7 +491,9 @@ export default async function HomePage() {
 
           {/* Large form card — 741px max width as per spec */}
           <div className="w-full" style={{ maxWidth: '741px' }}>
-            <WaitlistTabForm id="bottom-waitlist-form" />
+            <Suspense fallback={<div>Loading form...</div>}>
+              <WaitlistTabForm id="bottom-waitlist-form" />
+            </Suspense>
           </div>
         </div>
       </section>
