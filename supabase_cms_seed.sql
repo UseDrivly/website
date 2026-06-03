@@ -1108,7 +1108,7 @@ WHERE p.slug = 'about' AND s.section_key = 'media'
 ON CONFLICT (section_id, block_key) DO NOTHING;
 
 INSERT INTO public.cms_content_blocks (section_id, block_key, block_type, content_json, order_index)
-SELECT s.id, 'cta', 'json', '{"label": "hello@drivly.ng", "href": "mailto:hello@drivly.ng"}', 2
+SELECT s.id, 'cta', 'json', '{"label": "hello@usedrivly.com", "href": "mailto:hello@usedrivly.com"}', 2
 FROM public.cms_sections s JOIN public cms_pages p ON s.page_id = p.id
 WHERE p.slug = 'about' AND s.section_key = 'media'
 ON CONFLICT (section_id, block_key) DO NOTHING;

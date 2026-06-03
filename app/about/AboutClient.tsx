@@ -138,8 +138,8 @@ export default function AboutClient() {
           <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '19px', lineHeight: '33px', color: '#FFFFFF', marginBottom: '32px' }}>
             For press and media enquiries, contact us directly
           </p>
-          <a href="mailto:hello@drivly.ng" id="about-media-cta" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: '241px', height: '47px', background: '#7AB800', border: '1px solid #DCDCDC', borderRadius: '12px', fontFamily: 'Poppins, Inter, sans-serif', fontWeight: 600, fontSize: '16px', color: '#0D3D21', textDecoration: 'none' }}>
-            hello@drivly.ng
+          <a href="mailto:hello@usedrivly.com" id="about-media-cta" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: '241px', height: '47px', background: '#7AB800', border: '1px solid #DCDCDC', borderRadius: '12px', fontFamily: 'Poppins, Inter, sans-serif', fontWeight: 600, fontSize: '16px', color: '#0D3D21', textDecoration: 'none' }}>
+            hello@usedrivly.com
           </a>
         </div>
       </section>

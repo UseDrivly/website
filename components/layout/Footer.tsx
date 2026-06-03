@@ -25,7 +25,7 @@ const footerSections = [
   {
     heading: 'CONTACT',
     links: [
-      { label: 'hello@drivly.ng',  href: 'mailto:hello@drivly.ng' },
+      { label: 'hello@usedrivly.com',  href: 'mailto:hello@usedrivly.com' },
       { label: 'Media enquiries',  href: '/media' },
       { label: 'Work with us',     href: '/careers' },
     ],

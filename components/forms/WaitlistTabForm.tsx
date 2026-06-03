@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useTransition } from 'react';
+import React, { useState, useTransition, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { submitWaitlist } from '@/actions/waitlist';
 
 const ArrowRight = () => (
@@ -50,10 +51,21 @@ function FieldLabel({ text }: { text: string }) {
 }
 
 export default function WaitlistTabForm({ id, defaultRole = 'driver' }: WaitlistTabFormProps) {
+  const searchParams = useSearchParams();
   const [role, setRole] = useState<Role>(defaultRole);
   const [isPending, startTransition] = useTransition();
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
+
+  // Switch tab when ?role=provider appears in the URL (e.g. from hero CTA click)
+  useEffect(() => {
+    const urlRole = searchParams.get('role');
+    if (urlRole === 'provider' || urlRole === 'driver') {
+      setRole(urlRole as Role);
+      setStatus('idle');
+      setMessage('');
+    }
+  }, [searchParams]);
 
   function handleTabClick(newRole: Role) {
     setRole(newRole);
@@ -137,12 +149,12 @@ export default function WaitlistTabForm({ id, defaultRole = 'driver' }: Waitlist
       <form onSubmit={handleSubmit} style={{ textAlign: 'left' }}>
         <div style={{ marginBottom: '24px' }}>
           <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '18px', color: '#111810', marginBottom: '4px' }}>
-            Get early access
+            {role === 'driver' ? 'Get early access' : 'Earn more from your skills'}
           </p>
           <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '13px', lineHeight: '20px', color: '#4A5E46' }}>
             {role === 'driver'
               ? 'Be among the first drivers in Lagos to use Drivly when we launch.'
-              : 'Be among the first providers in Lagos to join the Drivly network.'}
+              : 'Get paying jobs sent directly to your phone. No joining fee.'}
           </p>
         </div>
 
@@ -193,7 +205,7 @@ export default function WaitlistTabForm({ id, defaultRole = 'driver' }: Waitlist
           }}
         >
           <span style={{ fontFamily: 'Poppins, Inter, sans-serif', fontWeight: 600, fontSize: '16px', color: '#0D3D21' }}>
-            {isPending ? 'Submitting…' : role === 'driver' ? 'Join the Waitlist' : 'Apply as Provider'}
+            {isPending ? 'Submitting…' : role === 'driver' ? 'Join the Waitlist' : 'Apply to Join'}
           </span>
           {!isPending && <ArrowRight />}
         </button>

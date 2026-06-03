@@ -95,9 +95,11 @@ export async function submitWaitlist(
     if (service_type) payload.service_type = service_type;
     if (company_name) payload.company = company_name;
     if (fleet_size) payload.fleet_size = fleet_size;
-    if (address) payload.message = `Address: ${address}`;
+    if (address) payload.address = address;
 
-    const { error } = await supabase.from('waitlist').insert(payload);
+    // Save to appropriate table based on role
+    const tableName = role === 'provider' ? 'providers' : 'waitlist';
+    const { error } = await supabase.from(tableName).insert(payload);
 
     if (error) {
       // Handle duplicate email gracefully
