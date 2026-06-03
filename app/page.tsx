@@ -1,15 +1,18 @@
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Image from 'next/image';
 import StatsBar from '@/components/sections/StatsBar';
 import BlogPreview from '@/components/sections/BlogPreview';
-import WaitlistTabForm from '@/components/forms/WaitlistTabForm';
 import ServiceCard from '@/components/ui/ServiceCard';
 import { services } from '@/lib/data/services';
 import { homeStats } from '@/lib/data/stats';
 import { getPosts } from '@/lib/supabase/posts';
 import Container from '@/components/layout/Container';
+
+const WaitlistTabForm = dynamic(() => import('@/components/forms/WaitlistTabForm'), {
+  loading: () => <div>Loading form...</div>,
+});
 
 /* Inline SVG icons — no lucide dependency needed */
 const ArrowRight = ({ size = 18, color = 'currentColor', strokeWidth = 1.5 }: { size?: number; color?: string; strokeWidth?: number }) => (
@@ -198,9 +201,7 @@ export default async function HomePage() {
 
           {/* ── Right: Waitlist form card ─────────────────── */}
           <div className="w-full lg:w-[421px] flex-shrink-0 mt-[40px] lg:mt-0">
-            <Suspense fallback={<div>Loading form...</div>}>
-              <WaitlistTabForm id="hero-form" />
-            </Suspense>
+            <WaitlistTabForm id="hero-form" />
           </div>
         </Container>
 
@@ -491,9 +492,7 @@ export default async function HomePage() {
 
           {/* Large form card — 741px max width as per spec */}
           <div className="w-full" style={{ maxWidth: '741px' }}>
-            <Suspense fallback={<div>Loading form...</div>}>
-              <WaitlistTabForm id="bottom-waitlist-form" />
-            </Suspense>
+            <WaitlistTabForm id="bottom-waitlist-form" />
           </div>
         </div>
       </section>

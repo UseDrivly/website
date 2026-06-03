@@ -1,14 +1,17 @@
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Image from 'next/image';
 import StatsBar from '@/components/sections/StatsBar';
 import BlogPreview from '@/components/sections/BlogPreview';
-import WaitlistTabForm from '@/components/forms/WaitlistTabForm';
 import ServiceCard from '@/components/ui/ServiceCard';
 import { services } from '@/lib/data/services';
 import { getPosts } from '@/lib/supabase/posts';
 import type { StatItem } from '@/types';
+
+const WaitlistTabForm = dynamic(() => import('@/components/forms/WaitlistTabForm'), {
+  loading: () => <div>Loading form...</div>,
+});
 
 export const metadata: Metadata = {
   title: 'For Drivers -s Roadside Help, Fixed Price, One Tap Away | Drivly',
@@ -407,9 +410,7 @@ export default async function DriversPage() {
 
           {/* Waitlist form card — 759px max width per spec */}
           <div className="w-full" style={{ maxWidth: '759px' }}>
-            <Suspense fallback={<div>Loading form...</div>}>
-              <WaitlistTabForm id="drivers-waitlist-form" />
-            </Suspense>
+            <WaitlistTabForm id="drivers-waitlist-form" />
           </div>
         </div>
       </section>
