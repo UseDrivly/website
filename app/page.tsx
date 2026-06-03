@@ -1,18 +1,16 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Image from 'next/image';
 import StatsBar from '@/components/sections/StatsBar';
 import BlogPreview from '@/components/sections/BlogPreview';
+import WaitlistTabForm from '@/components/forms/WaitlistTabForm';
 import ServiceCard from '@/components/ui/ServiceCard';
 import { services } from '@/lib/data/services';
 import { homeStats } from '@/lib/data/stats';
 import { getPosts } from '@/lib/supabase/posts';
 import Container from '@/components/layout/Container';
 
-const WaitlistTabForm = dynamic(() => import('@/components/forms/WaitlistTabForm'), {
-  loading: () => <div>Loading form...</div>,
-});
+export const dynamic = 'force-dynamic';
 
 /* Inline SVG icons — no lucide dependency needed */
 const ArrowRight = ({ size = 18, color = 'currentColor', strokeWidth = 1.5 }: { size?: number; color?: string; strokeWidth?: number }) => (

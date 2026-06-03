@@ -1,17 +1,15 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Image from 'next/image';
 import StatsBar from '@/components/sections/StatsBar';
 import BlogPreview from '@/components/sections/BlogPreview';
+import WaitlistTabForm from '@/components/forms/WaitlistTabForm';
 import ServiceCard from '@/components/ui/ServiceCard';
 import { services } from '@/lib/data/services';
 import { getPosts } from '@/lib/supabase/posts';
 import type { StatItem } from '@/types';
 
-const WaitlistTabForm = dynamic(() => import('@/components/forms/WaitlistTabForm'), {
-  loading: () => <div>Loading form...</div>,
-});
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'For Drivers -s Roadside Help, Fixed Price, One Tap Away | Drivly',
