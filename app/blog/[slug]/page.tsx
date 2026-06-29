@@ -39,12 +39,26 @@ const Arrow = () => (
 
 export default async function BlogArticlePage({ params }: BlogArticlePageProps) {
   const { slug } = await params;
-  const [post, relatedPosts] = await Promise.all([
+  const [rawPost, rawRelatedPosts] = await Promise.all([
     getPostBySlug(slug),
     getPosts({ limit: 3 }),
   ]);
 
-  if (!post) notFound();
+  if (!rawPost) notFound();
+
+  const post = {
+    ...rawPost,
+    title: (rawPost.title ?? '').replace(/\u00A0|&nbsp;/g, ' '),
+    excerpt: (rawPost.excerpt ?? '').replace(/\u00A0|&nbsp;/g, ' '),
+    content: (rawPost.content ?? '').replace(/\u00A0|&nbsp;/g, ' '),
+  };
+
+  const relatedPosts = rawRelatedPosts.map(p => ({
+    ...p,
+    title: (p.title ?? '').replace(/\u00A0|&nbsp;/g, ' '),
+    excerpt: (p.excerpt ?? '').replace(/\u00A0|&nbsp;/g, ' '),
+    content: (p.content ?? '').replace(/\u00A0|&nbsp;/g, ' '),
+  }));
 
   /* Format date as "April 2026" */
   const dateLabel = new Date(post.published_at).toLocaleDateString('en-NG', { year: 'numeric', month: 'long' });
@@ -83,8 +97,8 @@ export default async function BlogArticlePage({ params }: BlogArticlePageProps) 
               lineHeight: '33px',
               color: '#000000',
               maxWidth: '100%',
-              overflowWrap: 'anywhere',
-              wordBreak: 'break-word',
+              overflowWrap: 'break-word',
+              wordBreak: 'normal',
             }}
             dangerouslySetInnerHTML={{ __html: post.content ?? '' }}
           />

@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useTransition, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import React, { useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { submitWaitlist } from '@/actions/waitlist';
 
 const ArrowRight = () => (
@@ -51,26 +51,18 @@ function FieldLabel({ text }: { text: string }) {
 }
 
 export default function WaitlistTabForm({ id, defaultRole = 'driver' }: WaitlistTabFormProps) {
-  const searchParams = useSearchParams();
+  const router = useRouter();
   const [role, setRole] = useState<Role>(defaultRole);
   const [isPending, startTransition] = useTransition();
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
-  // Switch tab when ?role=provider appears in the URL (e.g. from hero CTA click)
-  useEffect(() => {
-    const urlRole = searchParams.get('role');
-    if (urlRole === 'provider' || urlRole === 'driver') {
-      setRole(urlRole as Role);
-      setStatus('idle');
-      setMessage('');
-    }
-  }, [searchParams]);
-
   function handleTabClick(newRole: Role) {
-    setRole(newRole);
-    setStatus('idle');
-    setMessage('');
+    if (newRole === 'driver') {
+      router.push('/drivers#waitlist');
+    } else if (newRole === 'provider') {
+      router.push('/providers#waitlist');
+    }
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -78,6 +70,24 @@ export default function WaitlistTabForm({ id, defaultRole = 'driver' }: Waitlist
     const form = e.currentTarget;
     const formData = new FormData(form);
     formData.set('role', role);
+
+    const name = String(formData.get('name') ?? '').trim();
+    const email = String(formData.get('email') ?? '').trim();
+    const phone = String(formData.get('phone') ?? '').trim();
+
+    if (!name) {
+      setStatus('error'); setMessage('Full name is required.'); return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setStatus('error'); setMessage('Please enter a valid email address.'); return;
+    }
+
+    const phoneRegex = /^\+?[0-9\s\-()]{10,15}$/;
+    if (!phoneRegex.test(phone)) {
+      setStatus('error'); setMessage('Please enter a valid phone number (10 to 15 digits).'); return;
+    }
 
     if (role === 'provider') {
       if (!String(formData.get('service_type') ?? '').trim()) {

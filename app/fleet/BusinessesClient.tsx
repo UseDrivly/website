@@ -73,25 +73,72 @@ function BusinessForm() {
   const [bizType, setBizType] = useState('');
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const inp: React.CSSProperties = { background: '#F7FAF2', border: '1.5px solid #D8E8D0', borderRadius: '10px', height: '44.5px', width: '100%', padding: '0 14px', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 300, fontSize: '15px', color: '#333', outline: 'none', boxSizing: 'border-box' };
   const lbl: React.CSSProperties = { fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '11px', lineHeight: '18px', letterSpacing: '0.88px', textTransform: 'uppercase', color: '#8FA489', display: 'block', marginBottom: '6px', textAlign: 'left' };
   const fld: React.CSSProperties = { marginBottom: '14px' };
 
   async function submit(e: React.FormEvent) {
-    e.preventDefault(); setStatus('loading');
+    e.preventDefault();
+    setErrorMessage('');
+
+    if (!name.trim()) {
+      setStatus('error'); setErrorMessage('Full name is required.'); return;
+    }
+
+    if (!company.trim()) {
+      setStatus('error'); setErrorMessage('Company name is required.'); return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      setStatus('error'); setErrorMessage('Please enter a valid company email address.'); return;
+    }
+
+    const phoneRegex = /^\+?[0-9\s\-()]{10,15}$/;
+    if (!phoneRegex.test(phone.trim())) {
+      setStatus('error'); setErrorMessage('Please enter a valid phone number (10 to 15 digits).'); return;
+    }
+
+    if (!address.trim()) {
+      setStatus('error'); setErrorMessage('Address is required.'); return;
+    }
+
+    if (!state) {
+      setStatus('error'); setErrorMessage('Please select a state.'); return;
+    }
+
+    if (!bizType) {
+      setStatus('error'); setErrorMessage('Please select a business type.'); return;
+    }
+
+    setStatus('loading');
     try {
-      const res = await fetch('/api/waitlist', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, company, email, phone, address, state, business_type: bizType, message, role: 'business' }) });
-      setStatus(res.ok ? 'success' : 'error');
-    } catch { setStatus('error'); }
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name.trim(), company: company.trim(), email: email.trim(), phone: phone.trim(), address: address.trim(), state, business_type: bizType, message, role: 'business' })
+      });
+      if (res.ok) {
+        setStatus('success');
+      } else {
+        const data = await res.json();
+        setStatus('error');
+        setErrorMessage(data.error || 'Something went wrong. Please try again.');
+      }
+    } catch {
+      setStatus('error');
+      setErrorMessage('Something went wrong. Please try again.');
+    }
   }
 
   return (
     <div style={{ background: '#FFFFFF', border: '1.5px solid #D8E8D0', boxShadow: '0px 1px 4px rgba(13,61,33,0.04), 0px 4px 32px rgba(13,61,33,0.07)', borderRadius: '20px', width: '100%', maxWidth: '663px', margin: '0 auto' }} className="p-5 pb-8 sm:px-[57px] sm:pt-[34px] sm:pb-11">
       {/* Active tab — "For Business" */}
-      <div style={{ background: '#F0F5EA', borderRadius: '10px', padding: '4px', display: 'inline-flex', gap: '4px', marginBottom: '24px' }}>
-        <div style={{ padding: '10px 24px', borderRadius: '8px', background: '#0D3D21', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '13px', color: '#FFFFFF' }}>For Business</div>
-        <div style={{ padding: '10px 20px', borderRadius: '8px', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '13px', color: '#8FA489' }}>For Driver</div>
+      <div style={{ background: '#F0F5EA', borderRadius: '10px', padding: '4px', display: 'flex', gap: '4px', marginBottom: '24px' }}>
+        <div style={{ padding: '10px 24px', borderRadius: '8px', background: '#0D3D21', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '13px', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1 }}>For Business</div>
+        <Link href="/drivers#waitlist" style={{ padding: '10px 20px', borderRadius: '8px', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '13px', color: '#8FA489', textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1 }}>For Driver</Link>
       </div>
 
       {status === 'success' ? (
@@ -124,7 +171,8 @@ function BusinessForm() {
           </div>
           <div style={{ marginBottom: '28px' }}><label style={lbl}>Message (optional)</label><textarea style={{ ...inp, height: '89px', padding: '12px 14px', resize: 'none' }} placeholder="Tell us briefly what you're looking for" value={message} onChange={e => setMessage(e.target.value)} /></div>
 
-          {status === 'error' && <p style={{ color: '#dc2626', fontSize: '13px', marginBottom: '12px', textAlign: 'center' }}>Something went wrong. Please try again.</p>}
+          {status === 'error' && <p style={{ color: '#dc2626', fontSize: '13px', marginBottom: '12px', textAlign: 'center' }}>{errorMessage || 'Something went wrong. Please try again.'}</p>}
+
 
           <button
             type="submit"
@@ -235,7 +283,7 @@ export default function BusinessesClient({ posts }: { posts: any[] }) {
           </div>
           <div className="text-center mb-16">
             <SectionHeadline centered>
-              Six ways Drivly<br className="hidden sm:block" />has you covered.
+              Six ways Drivly <br className="hidden sm:block" />has you covered.
             </SectionHeadline>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-16">

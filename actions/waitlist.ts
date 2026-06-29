@@ -67,6 +67,31 @@ export async function submitWaitlist(
       };
     }
 
+    // Email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return {
+        success: false,
+        error: 'Please enter a valid email address.',
+      };
+    }
+
+    // Phone number format validation (e.g. +234 800 000 0000 or local Nigerian/international formats)
+    if (!phone) {
+      return {
+        success: false,
+        error: 'Phone number is required.',
+      };
+    } else {
+      const phoneRegex = /^\+?[0-9\s\-()]{10,15}$/;
+      if (!phoneRegex.test(phone)) {
+        return {
+          success: false,
+          error: 'Please enter a valid phone number (10 to 15 digits).',
+        };
+      }
+    }
+
     if (role === 'provider' && !service_type) {
       return {
         success: false,
@@ -97,8 +122,8 @@ export async function submitWaitlist(
     if (fleet_size) payload.fleet_size = fleet_size;
     if (address) payload.address = address;
 
-    // Save to appropriate table based on role
-    const tableName = role === 'provider' ? 'providers' : 'waitlist';
+    // Save to appropriate table based on role — all roles go to public.waitlist per schema
+    const tableName = 'waitlist';
     const { error } = await supabase.from(tableName).insert(payload);
 
     if (error) {

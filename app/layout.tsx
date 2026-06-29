@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import ConditionalLayout from '@/components/layout/ConditionalLayout';
+import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/Footer';
 
 // ── Typography ──────────────────────────────────────────────────
 const inter = Inter({
@@ -85,7 +87,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} h-full scroll-smooth`}>
       <body className="flex min-h-full flex-col bg-white text-brand-text-primary antialiased overflow-x-hidden">
-        <ConditionalLayout>
+        <ConditionalLayout navbar={<Navbar />} footer={<Footer />}>
           {/* Page content — grows to fill viewport */}
           <main className="flex-1" id="main-content" tabIndex={-1}>
             {children}

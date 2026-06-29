@@ -56,34 +56,66 @@ function ProviderForm() {
   const [service, setService] = useState('');
   const [address, setAddress] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const inputStyle: React.CSSProperties = { background: '#F7FAF2', border: '1.5px solid #D8E8D0', borderRadius: '10px', height: '44.5px', width: '100%', padding: '0 14px', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 300, fontSize: '15px', color: '#333', outline: 'none', boxSizing: 'border-box' };
   const labelStyle: React.CSSProperties = { fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '11px', lineHeight: '18px', letterSpacing: '0.88px', textTransform: 'uppercase', color: '#8FA489', display: 'block', marginBottom: '6px', textAlign: 'left' };
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setErrorMessage('');
+
+    if (!name.trim()) {
+      setStatus('error'); setErrorMessage('Full name is required.'); return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      setStatus('error'); setErrorMessage('Please enter a valid email address.'); return;
+    }
+
+    const phoneRegex = /^\+?[0-9\s\-()]{10,15}$/;
+    if (!phoneRegex.test(phone.trim())) {
+      setStatus('error'); setErrorMessage('Please enter a valid phone number (10 to 15 digits).'); return;
+    }
+
+    if (!address.trim()) {
+      setStatus('error'); setErrorMessage('Address is required.'); return;
+    }
+
+    if (!service.trim()) {
+      setStatus('error'); setErrorMessage('Service type is required.'); return;
+    }
+
     setStatus('loading');
     try {
       const res = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, phone, email, address, role: 'provider', service_type: service }),
+        body: JSON.stringify({ name: name.trim(), phone: phone.trim(), email: email.trim(), address: address.trim(), role: 'provider', service_type: service.trim() }),
       });
-      setStatus(res.ok ? 'success' : 'error');
+      if (res.ok) {
+        setStatus('success');
+      } else {
+        const data = await res.json();
+        setStatus('error');
+        setErrorMessage(data.error || 'Something went wrong. Please try again.');
+      }
     } catch {
       setStatus('error');
+      setErrorMessage('Something went wrong. Please try again.');
     }
   }
 
   return (
     <div style={{ background: '#FFFFFF', border: '1.5px solid #D8E8D0', boxShadow: '0px 1px 4px rgba(13,61,33,0.04), 0px 4px 32px rgba(13,61,33,0.07)', borderRadius: '20px', width: '100%', maxWidth: '597px', margin: '0 auto' }} className="p-5 pb-8 sm:px-[54px] sm:pt-[34px] sm:pb-10">
       {/* Tab toggle — provider pre-selected */}
-      <div style={{ background: '#F0F5EA', borderRadius: '10px', padding: '4px', display: 'inline-flex', gap: '4px', marginBottom: '24px' }}>
-        <div style={{ padding: '10px 20px', borderRadius: '8px', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '13px', color: '#8FA489' }}>I&apos;m a Driver</div>
-        <div style={{ padding: '10px 20px', borderRadius: '8px', background: '#0D3D21', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '13px', color: '#FFFFFF' }}>I&apos;m a Provider</div>
+      <div style={{ background: '#F0F5EA', borderRadius: '10px', padding: '4px', display: 'flex', gap: '4px', marginBottom: '24px' }}>
+        <Link href="/drivers#waitlist" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '35.5px', borderRadius: '8px', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '13px', color: '#8FA489', textDecoration: 'none' }}>I&apos;m a Driver</Link>
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '35.5px', borderRadius: '8px', background: '#0D3D21', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '13px', color: '#FFFFFF' }}>I&apos;m a Provider</div>
       </div>
 
-          {status === 'success' ? (
+      {status === 'success' ? (
         <div style={{ textAlign: 'center', padding: '40px 0' }}>
           <div style={{ fontSize: '40px', marginBottom: '12px' }}>✅</div>
           <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 600, fontSize: '18px', color: '#0D3D21' }}>Application received!</p>
@@ -116,7 +148,9 @@ function ProviderForm() {
           </div>
 
           {status === 'error' && (
-            <p style={{ color: '#dc2626', fontSize: '13px', marginBottom: '12px', textAlign: 'center' }}>Something went wrong. Please try again.</p>
+            <p style={{ color: '#dc2626', fontSize: '13px', marginBottom: '12px', textAlign: 'center' }}>
+              {errorMessage || 'Something went wrong. Please try again.'}
+            </p>
           )}
 
           <button

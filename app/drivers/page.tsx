@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import StatsBar from '@/components/sections/StatsBar';
@@ -289,7 +290,7 @@ export default async function DriversPage() {
           </div>
           <div className="text-center mb-16">
             <SectionHeadline centered>
-              Six ways Drivly<br className="hidden sm:block" />has you covered.
+              Six ways Drivly <br className="hidden sm:block" />has you covered.
             </SectionHeadline>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-16">
@@ -408,7 +409,9 @@ export default async function DriversPage() {
 
           {/* Waitlist form card — 759px max width per spec */}
           <div className="w-full" style={{ maxWidth: '759px' }}>
-            <WaitlistTabForm id="drivers-waitlist-form" />
+            <Suspense fallback={<div style={{ background: '#FFF', border: '1.5px solid #D8E8D0', borderRadius: '20px', padding: '33.5px 7.98% 40px', minHeight: '400px' }} />}>
+              <WaitlistTabForm id="drivers-waitlist-form" />
+            </Suspense>
           </div>
         </div>
       </section>

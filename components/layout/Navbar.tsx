@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import Container from './Container';
 
 const navLinks = [
+  { label: 'Home', href: '/' },
   { label: 'For Drivers', href: '/drivers' },
   { label: 'For Providers', href: '/providers' },
   { label: 'For Businesses', href: '/fleet' },

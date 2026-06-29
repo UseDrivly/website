@@ -182,7 +182,13 @@ function EmptyGrid() {
 /* ─── Page ─────────────────────────────────────────────────────────────── */
 export default async function BlogPage() {
   // Fetch from Supabase
-  const posts = await getPosts();
+  const rawPosts = await getPosts();
+  const posts = rawPosts.map(post => ({
+    ...post,
+    title: (post.title ?? '').replace(/\u00A0|&nbsp;/g, ' '),
+    excerpt: (post.excerpt ?? '').replace(/\u00A0|&nbsp;/g, ' '),
+    content: (post.content ?? '').replace(/\u00A0|&nbsp;/g, ' '),
+  }));
   const featured = posts[0] ?? null;
   const gridPosts = posts.length > 0 ? posts : [];
 

@@ -31,14 +31,33 @@ export default function WaitlistForm({ config }: WaitlistFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     setError(null);
+
+    const name = (values.name ?? '').trim();
+    const email = (values.email ?? '').trim();
+    const phone = (values.phone ?? '').trim();
+
+    if (!name) {
+      setError('Full name is required.'); return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError('Please enter a valid email address.'); return;
+    }
+
+    const phoneRegex = /^\+?[0-9\s\-()]{10,15}$/;
+    if (!phoneRegex.test(phone)) {
+      setError('Please enter a valid phone number (10 to 15 digits).'); return;
+    }
+
+    setIsLoading(true);
 
     // Build typed payload from field values
     const payload: WaitlistFormData = {
-      name:          values.name ?? '',
-      email:         values.email ?? '',
-      phone:         values.phone ?? '',
+      name,
+      email,
+      phone,
       city:          values.city ?? '',
       role:          config.role,
       vehicle_type:  values.vehicle_type,

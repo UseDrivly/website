@@ -10,8 +10,6 @@ import { homeStats } from '@/lib/data/stats';
 import { getPosts } from '@/lib/supabase/posts';
 import Container from '@/components/layout/Container';
 
-export const dynamic = 'force-dynamic';
-
 /* Inline SVG icons — no lucide dependency needed */
 const ArrowRight = ({ size = 18, color = 'currentColor', strokeWidth = 1.5 }: { size?: number; color?: string; strokeWidth?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -122,7 +120,13 @@ function GreenBtn({ href, label, id }: { href: string; label: string; id?: strin
 }
 
 export default async function HomePage() {
-  const posts = await getPosts({ limit: 3 });
+  const rawPosts = await getPosts({ limit: 3 });
+  const posts = rawPosts.map(post => ({
+    ...post,
+    title: (post.title ?? '').replace(/\u00A0|&nbsp;/g, ' '),
+    excerpt: (post.excerpt ?? '').replace(/\u00A0|&nbsp;/g, ' '),
+    content: (post.content ?? '').replace(/\u00A0|&nbsp;/g, ' '),
+  }));
 
   return (
     <>
@@ -430,7 +434,7 @@ export default async function HomePage() {
           </div>
           <div className="text-center mb-16">
             <SectionHeadline centered>
-              Six ways Drivly<br className="hidden sm:block" />has you covered.
+              Six ways Drivly <br className="hidden sm:block" />has you covered.
             </SectionHeadline>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-16">

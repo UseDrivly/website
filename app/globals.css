@@ -9,6 +9,8 @@
 
 /* 2. Tailwind v4 */
 @import "tailwindcss";
+@source "../components/**/*.{ts,tsx}";
+@source "../app/**/*.{ts,tsx}";
 
 /* 3. Official plugins */
 @plugin "@tailwindcss/typography";
@@ -148,8 +150,8 @@ body {
 
 .prose-drivly {
   max-width: 100%;
-  overflow-wrap: anywhere;
-  word-break: break-word;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 .prose-drivly img,
@@ -165,6 +167,6 @@ body {
 }
 
 .prose-drivly code {
-  overflow-wrap: anywhere;
-  word-break: break-word;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
