@@ -184,7 +184,17 @@ export default function WaitlistTabForm({ id, defaultRole = 'driver' }: Waitlist
           {role === 'provider' && (
             <div>
               <FieldLabel text="Service type" />
-              <input name="service_type" type="text" placeholder="e.g. Towing, Tyre repair, Battery jumpstart" required style={inputStyle} />
+              <select name="service_type" required style={inputStyle} defaultValue="">
+                <option value="" disabled>Select your service</option>
+                <option value="Flat Tyre Repair">Flat Tyre Repair</option>
+                <option value="Battery Jump Start">Battery Jump Start</option>
+                <option value="Tow Truck">Tow Truck</option>
+                <option value="Emergency Fuel">Emergency Fuel</option>
+                <option value="Car Lockout">Car Lockout</option>
+                <option value="Mobile Mechanic">Mobile Mechanic</option>
+                <option value="Service Centre">Service Centre</option>
+                <option value="Other">Other</option>
+              </select>
             </div>
           )}
           {role === 'provider' && (

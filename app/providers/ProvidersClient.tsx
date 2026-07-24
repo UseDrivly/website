@@ -144,7 +144,17 @@ function ProviderForm() {
           </div>
           <div style={{ marginBottom: '28px' }}>
             <label style={labelStyle}>Service type</label>
-            <input style={inputStyle} placeholder="Input your services" value={service} onChange={e => setService(e.target.value)} required />
+            <select style={inputStyle} value={service} onChange={e => setService(e.target.value)} required>
+              <option value="" disabled>Select your service</option>
+              <option value="Flat Tyre Repair">Flat Tyre Repair</option>
+              <option value="Battery Jump Start">Battery Jump Start</option>
+              <option value="Tow Truck">Tow Truck</option>
+              <option value="Emergency Fuel">Emergency Fuel</option>
+              <option value="Car Lockout">Car Lockout</option>
+              <option value="Mobile Mechanic">Mobile Mechanic</option>
+              <option value="Service Centre">Service Centre</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
 
           {status === 'error' && (

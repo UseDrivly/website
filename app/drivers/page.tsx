@@ -273,7 +273,7 @@ export default async function DriversPage() {
               ))}
             </div>
             <div className="mt-8">
-              <DarkBtn href="/drivers" label="Join the Driver Waitlist" id="driver-showcase-cta" />
+              <DarkBtn href="#waitlist" label="Join the Driver Waitlist" id="driver-showcase-cta" />
             </div>
           </div>
         </div>
