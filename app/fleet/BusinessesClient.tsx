@@ -62,8 +62,8 @@ function SectionHeadline({ text, children, centered = false }: { text?: string; 
 }
 
 
-/* ── Business waitlist form (7 fields per spec) ── */
 function BusinessForm() {
+  const [role, setRole] = useState<'business' | 'driver'>('business');
   const [name, setName] = useState('');
   const [company, setCompany] = useState('');
   const [email, setEmail] = useState('');
@@ -87,13 +87,9 @@ function BusinessForm() {
       setStatus('error'); setErrorMessage('Full name is required.'); return;
     }
 
-    if (!company.trim()) {
-      setStatus('error'); setErrorMessage('Company name is required.'); return;
-    }
-
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email.trim())) {
-      setStatus('error'); setErrorMessage('Please enter a valid company email address.'); return;
+      setStatus('error'); setErrorMessage('Please enter a valid email address.'); return;
     }
 
     const phoneRegex = /^\+?[0-9\s\-()]{10,15}$/;
@@ -101,16 +97,24 @@ function BusinessForm() {
       setStatus('error'); setErrorMessage('Please enter a valid phone number (10 to 15 digits).'); return;
     }
 
-    if (!address.trim()) {
-      setStatus('error'); setErrorMessage('Address is required.'); return;
-    }
+    let payload: any = { name: name.trim(), email: email.trim(), phone: phone.trim(), role };
 
-    if (!state) {
-      setStatus('error'); setErrorMessage('Please select a state.'); return;
-    }
-
-    if (!bizType) {
-      setStatus('error'); setErrorMessage('Please select a business type.'); return;
+    if (role === 'business') {
+      if (!company.trim()) {
+        setStatus('error'); setErrorMessage('Company name is required.'); return;
+      }
+      if (!address.trim()) {
+        setStatus('error'); setErrorMessage('Address is required.'); return;
+      }
+      if (!state) {
+        setStatus('error'); setErrorMessage('Please select a state.'); return;
+      }
+      if (!bizType) {
+        setStatus('error'); setErrorMessage('Please select a business type.'); return;
+      }
+      payload = { ...payload, company: company.trim(), address: address.trim(), state, business_type: bizType, message };
+    } else {
+      payload = { ...payload, city: 'Lagos' }; // Default city for drivers
     }
 
     setStatus('loading');
@@ -118,7 +122,7 @@ function BusinessForm() {
       const res = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: name.trim(), company: company.trim(), email: email.trim(), phone: phone.trim(), address: address.trim(), state, business_type: bizType, message, role: 'business' })
+        body: JSON.stringify(payload)
       });
       if (res.ok) {
         setStatus('success');
@@ -135,10 +139,10 @@ function BusinessForm() {
 
   return (
     <div style={{ background: '#FFFFFF', border: '1.5px solid #D8E8D0', boxShadow: '0px 1px 4px rgba(13,61,33,0.04), 0px 4px 32px rgba(13,61,33,0.07)', borderRadius: '20px', width: '100%', maxWidth: '663px', margin: '0 auto' }} className="p-5 pb-8 sm:px-[57px] sm:pt-[34px] sm:pb-11">
-      {/* Active tab — "For Business" */}
+      {/* Tab toggle */}
       <div style={{ background: '#F0F5EA', borderRadius: '10px', padding: '4px', display: 'flex', gap: '4px', marginBottom: '24px' }}>
-        <div style={{ padding: '10px 24px', borderRadius: '8px', background: '#0D3D21', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '13px', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1 }}>For Business</div>
-        <Link href="/drivers#waitlist" style={{ padding: '10px 20px', borderRadius: '8px', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '13px', color: '#8FA489', textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1 }}>For Driver</Link>
+        <button type="button" onClick={() => setRole('business')} style={{ padding: '10px 24px', borderRadius: '8px', background: role === 'business' ? '#0D3D21' : 'transparent', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '13px', color: role === 'business' ? '#FFFFFF' : '#8FA489', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1 }}>For Business</button>
+        <button type="button" onClick={() => setRole('driver')} style={{ padding: '10px 20px', borderRadius: '8px', background: role === 'driver' ? '#0D3D21' : 'transparent', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '13px', color: role === 'driver' ? '#FFFFFF' : '#8FA489', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1 }}>For Driver</button>
       </div>
 
       {status === 'success' ? (
@@ -150,35 +154,49 @@ function BusinessForm() {
       ) : (
         <form onSubmit={submit} style={{ textAlign: 'left' }}>
           <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '18px', color: '#111810', marginBottom: '6px' }}>Get early access</p>
-          <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '13px', color: '#4A5E46', marginBottom: '24px' }}>Be among the first drivers in Lagos to use Drivly when we launch.</p>
+          <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '13px', color: '#4A5E46', marginBottom: '24px' }}>
+            {role === 'driver' ? 'Be among the first drivers in Lagos to use Drivly when we launch.' : 'Get priority access for your business fleet.'}
+          </p>
 
           <div style={fld}><label style={lbl}>Full name</label><input style={inp} placeholder="Emeka Okafor" value={name} onChange={e => setName(e.target.value)} required /></div>
-          <div style={fld}><label style={lbl}>Company name</label><input style={inp} placeholder="Your company name" value={company} onChange={e => setCompany(e.target.value)} required /></div>
-          <div style={fld}><label style={lbl}>Company email</label><input style={inp} type="email" placeholder="Your company email" value={email} onChange={e => setEmail(e.target.value)} required /></div>
+          
+          {role === 'business' && (
+            <div style={fld}><label style={lbl}>Company name</label><input style={inp} placeholder="Your company name" value={company} onChange={e => setCompany(e.target.value)} required /></div>
+          )}
+          
+          <div style={fld}>
+            <label style={lbl}>{role === 'business' ? 'Company email' : 'Email address'}</label>
+            <input style={inp} type="email" placeholder={role === 'business' ? "Your company email" : "emeka@email.com"} value={email} onChange={e => setEmail(e.target.value)} required />
+          </div>
+          
           <div style={fld}><label style={lbl}>Phone number</label><input style={inp} placeholder="+234 800 000 0000" value={phone} onChange={e => setPhone(e.target.value)} required /></div>
-          <div style={fld}><label style={lbl}>Address</label><input style={inp} placeholder="Company address" value={address} onChange={e => setAddress(e.target.value)} required /></div>
-          <div style={fld}><label style={lbl}>State</label>
-            <select style={{ ...inp, appearance: 'none' }} value={state} onChange={e => setState(e.target.value)}>
-              <option value="">Select state</option>
-              {['Lagos', 'Abuja', 'Rivers', 'Kano', 'Ogun', 'Oyo', 'Kaduna'].map(s => <option key={s}>{s}</option>)}
-            </select>
-          </div>
-          <div style={fld}><label style={lbl}>Type of business</label>
-            <select style={{ ...inp, appearance: 'none' }} value={bizType} onChange={e => setBizType(e.target.value)}>
-              <option value="">Select type of business</option>
-              {['Hospitality', 'Logistics', 'Manufacturing', 'Retail', 'School', 'Corporate Fleet', 'Construction', 'Other'].map(t => <option key={t}>{t}</option>)}
-            </select>
-          </div>
-          <div style={{ marginBottom: '28px' }}><label style={lbl}>Message (optional)</label><textarea style={{ ...inp, height: '89px', padding: '12px 14px', resize: 'none' }} placeholder="Tell us briefly what you're looking for" value={message} onChange={e => setMessage(e.target.value)} /></div>
+          
+          {role === 'business' && (
+            <>
+              <div style={fld}><label style={lbl}>Address</label><input style={inp} placeholder="Company address" value={address} onChange={e => setAddress(e.target.value)} required /></div>
+              <div style={fld}><label style={lbl}>State</label>
+                <select style={{ ...inp, appearance: 'none' }} value={state} onChange={e => setState(e.target.value)}>
+                  <option value="">Select state</option>
+                  {['Lagos', 'Abuja', 'Rivers', 'Kano', 'Ogun', 'Oyo', 'Kaduna'].map(s => <option key={s}>{s}</option>)}
+                </select>
+              </div>
+              <div style={fld}><label style={lbl}>Type of business</label>
+                <select style={{ ...inp, appearance: 'none' }} value={bizType} onChange={e => setBizType(e.target.value)}>
+                  <option value="">Select type of business</option>
+                  {['Hospitality', 'Logistics', 'Manufacturing', 'Retail', 'School', 'Corporate Fleet', 'Construction', 'Other'].map(t => <option key={t}>{t}</option>)}
+                </select>
+              </div>
+              <div style={{ marginBottom: '28px' }}><label style={lbl}>Message (optional)</label><textarea style={{ ...inp, height: '89px', padding: '12px 14px', resize: 'none' }} placeholder="Tell us briefly what you're looking for" value={message} onChange={e => setMessage(e.target.value)} /></div>
+            </>
+          )}
 
           {status === 'error' && <p style={{ color: '#dc2626', fontSize: '13px', marginBottom: '12px', textAlign: 'center' }}>{errorMessage || 'Something went wrong. Please try again.'}</p>}
-
 
           <button
             type="submit"
             disabled={status === 'loading'}
             className="bg-brand-action hover:bg-brand-action-hover transition-colors duration-200"
-            style={{ width: '100%', height: '48px', boxShadow: '0px 4px 16px rgba(122,184,0,0.3)', borderRadius: '12px', border: 'none', cursor: 'pointer', fontFamily: 'Poppins, Inter, sans-serif', fontWeight: 600, fontSize: '16px', color: '#0D3D21', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+            style={{ width: '100%', height: '48px', boxShadow: '0px 4px 16px rgba(122,184,0,0.3)', borderRadius: '12px', border: 'none', cursor: 'pointer', fontFamily: 'Poppins, Inter, sans-serif', fontWeight: 600, fontSize: '16px', color: '#0D3D21', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: role === 'driver' ? '28px' : '0' }}
           >
             {status === 'loading' ? 'Submitting…' : <><span>Join the Waitlist</span><Arrow /></>}
           </button>
