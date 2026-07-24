@@ -58,11 +58,7 @@ export default function WaitlistTabForm({ id, defaultRole = 'driver' }: Waitlist
   const [message, setMessage] = useState('');
 
   function handleTabClick(newRole: Role) {
-    if (newRole === 'driver') {
-      router.push('/drivers#waitlist');
-    } else if (newRole === 'provider') {
-      router.push('/providers#waitlist');
-    }
+    setRole(newRole);
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {

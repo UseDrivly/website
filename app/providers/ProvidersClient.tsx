@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import BlogPreview from '@/components/sections/BlogPreview';
 import StatsBar from '@/components/sections/StatsBar';
+import WaitlistTabForm from '@/components/forms/WaitlistTabForm';
 import { useState } from 'react';
 import type { StatItem } from '@/types';
 
@@ -48,135 +49,7 @@ function GreenBtn({ href, label, id }: { href: string; label: string; id?: strin
   );
 }
 
-/* ── Provider-specific waitlist form ── */
-function ProviderForm() {
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [service, setService] = useState('');
-  const [address, setAddress] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [errorMessage, setErrorMessage] = useState('');
 
-  const inputStyle: React.CSSProperties = { background: '#F7FAF2', border: '1.5px solid #D8E8D0', borderRadius: '10px', height: '44.5px', width: '100%', padding: '0 14px', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 300, fontSize: '15px', color: '#333', outline: 'none', boxSizing: 'border-box' };
-  const labelStyle: React.CSSProperties = { fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '11px', lineHeight: '18px', letterSpacing: '0.88px', textTransform: 'uppercase', color: '#8FA489', display: 'block', marginBottom: '6px', textAlign: 'left' };
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setErrorMessage('');
-
-    if (!name.trim()) {
-      setStatus('error'); setErrorMessage('Full name is required.'); return;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email.trim())) {
-      setStatus('error'); setErrorMessage('Please enter a valid email address.'); return;
-    }
-
-    const phoneRegex = /^\+?[0-9\s\-()]{10,15}$/;
-    if (!phoneRegex.test(phone.trim())) {
-      setStatus('error'); setErrorMessage('Please enter a valid phone number (10 to 15 digits).'); return;
-    }
-
-    if (!address.trim()) {
-      setStatus('error'); setErrorMessage('Address is required.'); return;
-    }
-
-    if (!service.trim()) {
-      setStatus('error'); setErrorMessage('Service type is required.'); return;
-    }
-
-    setStatus('loading');
-    try {
-      const res = await fetch('/api/waitlist', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: name.trim(), phone: phone.trim(), email: email.trim(), address: address.trim(), role: 'provider', service_type: service.trim() }),
-      });
-      if (res.ok) {
-        setStatus('success');
-      } else {
-        const data = await res.json();
-        setStatus('error');
-        setErrorMessage(data.error || 'Something went wrong. Please try again.');
-      }
-    } catch {
-      setStatus('error');
-      setErrorMessage('Something went wrong. Please try again.');
-    }
-  }
-
-  return (
-    <div style={{ background: '#FFFFFF', border: '1.5px solid #D8E8D0', boxShadow: '0px 1px 4px rgba(13,61,33,0.04), 0px 4px 32px rgba(13,61,33,0.07)', borderRadius: '20px', width: '100%', maxWidth: '597px', margin: '0 auto' }} className="p-5 pb-8 sm:px-[54px] sm:pt-[34px] sm:pb-10">
-      {/* Tab toggle — provider pre-selected */}
-      <div style={{ background: '#F0F5EA', borderRadius: '10px', padding: '4px', display: 'flex', gap: '4px', marginBottom: '24px' }}>
-        <Link href="/drivers#waitlist" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '35.5px', borderRadius: '8px', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '13px', color: '#8FA489', textDecoration: 'none' }}>I&apos;m a Driver</Link>
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '35.5px', borderRadius: '8px', background: '#0D3D21', fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '13px', color: '#FFFFFF' }}>I&apos;m a Provider</div>
-      </div>
-
-      {status === 'success' ? (
-        <div style={{ textAlign: 'center', padding: '40px 0' }}>
-          <div style={{ fontSize: '40px', marginBottom: '12px' }}>✅</div>
-          <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 600, fontSize: '18px', color: '#0D3D21' }}>Application received!</p>
-          <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '13px', color: '#4A5E46', marginTop: '8px' }}>We&apos;ll reach out when Drivly launches in your area.</p>
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit} style={{ textAlign: 'left' }}>
-          <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 500, fontSize: '18px', color: '#111810', marginBottom: '6px' }}>Earn more from your skills</p>
-          <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '13px', color: '#4A5E46', marginBottom: '24px' }}>Get paying jobs sent directly to your phone. No joining fee.</p>
-
-          <div style={{ marginBottom: '16px' }}>
-            <label style={labelStyle}>Full name</label>
-            <input style={inputStyle} placeholder="Emeka Okafor" value={name} onChange={e => setName(e.target.value)} required />
-          </div>
-          <div style={{ marginBottom: '16px' }}>
-            <label style={labelStyle}>Phone number</label>
-            <input style={inputStyle} placeholder="+234 800 000 0000" value={phone} onChange={e => setPhone(e.target.value)} required />
-          </div>
-          <div style={{ marginBottom: '16px' }}>
-            <label style={labelStyle}>Email address</label>
-            <input style={inputStyle} type="email" placeholder="emeka@email.com" value={email} onChange={e => setEmail(e.target.value)} required />
-          </div>
-          <div style={{ marginBottom: '16px' }}>
-            <label style={labelStyle}>Address</label>
-            <input style={inputStyle} placeholder="Your address" value={address} onChange={e => setAddress(e.target.value)} required />
-          </div>
-          <div style={{ marginBottom: '28px' }}>
-            <label style={labelStyle}>Service type</label>
-            <select style={inputStyle} value={service} onChange={e => setService(e.target.value)} required>
-              <option value="" disabled>Select your service</option>
-              <option value="Flat Tyre Repair">Flat Tyre Repair</option>
-              <option value="Battery Jump Start">Battery Jump Start</option>
-              <option value="Tow Truck">Tow Truck</option>
-              <option value="Emergency Fuel">Emergency Fuel</option>
-              <option value="Car Lockout">Car Lockout</option>
-              <option value="Mobile Mechanic">Mobile Mechanic</option>
-              <option value="Service Centre">Service Centre</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-
-          {status === 'error' && (
-            <p style={{ color: '#dc2626', fontSize: '13px', marginBottom: '12px', textAlign: 'center' }}>
-              {errorMessage || 'Something went wrong. Please try again.'}
-            </p>
-          )}
-
-          <button
-            type="submit"
-            disabled={status === 'loading'}
-            className="bg-brand-action hover:bg-brand-action-hover transition-colors duration-200"
-            style={{ width: '100%', height: '48px', boxShadow: '0px 4px 16px rgba(122,184,0,0.3)', borderRadius: '12px', border: 'none', cursor: 'pointer', fontFamily: 'Poppins, Inter, sans-serif', fontWeight: 600, fontSize: '16px', color: '#0D3D21', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
-          >
-            {status === 'loading' ? 'Submitting…' : <><span>Apply to Join</span><Arrow /></>}
-          </button>
-          <p style={{ fontFamily: 'Helvetica Neue, Inter, sans-serif', fontWeight: 400, fontSize: '11px', color: '#8FA489', textAlign: 'center', marginTop: '12px' }}>We&apos;ll notify you the moment Drivly launches in your area. No spam, ever.</p>
-        </form>
-      )}
-    </div>
-  );
-}
 
 /* ═══════════════════════════════════════════════════════════
    MAIN PAGE COMPONENT
@@ -397,8 +270,8 @@ export default function ProvidersClient({ posts }: { posts: any[] }) {
             We&apos;re launching in Lagos. Sign up now and we&apos;ll reach out the moment we go live in your area.
           </p>
           {/* Provider waitlist form */}
-          <div style={{ width: '100%' }}>
-            <ProviderForm />
+          <div style={{ width: '100%', maxWidth: '759px' }}>
+            <WaitlistTabForm id="provider-waitlist-form" defaultRole="provider" />
           </div>
         </div>
       </section>
