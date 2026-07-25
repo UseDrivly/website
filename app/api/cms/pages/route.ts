@@ -26,10 +26,18 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { slug, title, description, is_published } = body;
+    let { slug, title, description, is_published } = body;
 
-    if (!slug || !title) {
-      return NextResponse.json({ error: 'Slug and title are required' }, { status: 400 });
+    if (!title) {
+      return NextResponse.json({ error: 'Title is required' }, { status: 400 });
+    }
+
+    if (!slug && title) {
+      slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    }
+
+    if (!slug) {
+      return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);

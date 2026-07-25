@@ -10,10 +10,18 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { title, slug, excerpt, content, category, cover_image_url, is_published } = body;
+    let { title, slug, excerpt, content, category, cover_image_url, is_published } = body;
 
-    if (!title || !slug) {
-      return NextResponse.json({ error: 'Title and Slug are required' }, { status: 400 });
+    if (!title) {
+      return NextResponse.json({ error: 'Title is required' }, { status: 400 });
+    }
+
+    if (!slug && title) {
+      slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    }
+
+    if (!slug) {
+      return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
     }
 
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -50,10 +58,18 @@ export async function PUT(request: Request) {
     }
 
     const body = await request.json();
-    const { id, title, slug, excerpt, content, category, cover_image_url, is_published } = body;
+    let { id, title, slug, excerpt, content, category, cover_image_url, is_published } = body;
 
-    if (!id || !title || !slug) {
-      return NextResponse.json({ error: 'ID, Title, and Slug are required' }, { status: 400 });
+    if (!id || !title) {
+      return NextResponse.json({ error: 'ID and Title are required' }, { status: 400 });
+    }
+
+    if (!slug && title) {
+      slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    }
+
+    if (!slug) {
+      return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
     }
 
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
