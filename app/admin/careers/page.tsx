@@ -77,6 +77,43 @@ export default async function AdminCareers() {
                         </a>
                       </div>
                     )}
+                    
+                    {app.resume_url && (
+                      <div className="pt-4 border-t border-[#D8E8D0] mt-4">
+                        <div className="flex items-center justify-between mb-4">
+                          <h4 className="text-xs font-bold uppercase text-[#8FA489]">Resume</h4>
+                          <a 
+                            href={app.resume_url} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            download
+                            className="px-4 py-2 bg-[#7AB800] text-[#0D3D21] hover:opacity-90 rounded-lg text-sm font-bold transition flex items-center gap-2"
+                          >
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                              <polyline points="7 10 12 15 17 10"></polyline>
+                              <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Download Resume
+                          </a>
+                        </div>
+                        {app.resume_url.toLowerCase().endsWith('.pdf') ? (
+                          <div className="border border-[#D8E8D0] rounded-xl overflow-hidden bg-[#F7FAF2] h-[500px]">
+                            <object data={app.resume_url} type="application/pdf" width="100%" height="100%">
+                              <div className="flex flex-col items-center justify-center h-full text-[#4A5E46]">
+                                <p className="mb-2">Unable to display PDF preview.</p>
+                                <a href={app.resume_url} target="_blank" rel="noopener noreferrer" className="text-[#7AB800] underline font-medium">Click here to view it</a>
+                              </div>
+                            </object>
+                          </div>
+                        ) : (
+                          <div className="p-4 bg-[#F7FAF2] border border-[#D8E8D0] rounded-xl text-center text-[#4A5E46]">
+                            <p>This resume is not a PDF and cannot be previewed.</p>
+                            <a href={app.resume_url} target="_blank" rel="noopener noreferrer" className="text-[#7AB800] underline font-medium mt-2 inline-block">Download to view</a>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </details>

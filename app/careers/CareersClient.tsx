@@ -48,18 +48,33 @@ function ApplicationForm({ jobs }: { jobs: CareerJob[] }) {
   const [role, setRole] = useState('');
   const [why, setWhy] = useState('');
   const [portfolio, setPortfolio] = useState('');
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setStatus('loading');
     try {
+      let resumeUrl = '';
+      if (resumeFile) {
+        const formData = new FormData();
+        formData.append('file', resumeFile);
+        const uploadRes = await fetch('/api/careers/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        if (!uploadRes.ok) throw new Error('Upload failed');
+        const uploadData = await uploadRes.json();
+        resumeUrl = uploadData.url;
+      }
+
       const res = await fetch('/api/careers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, phone, email, role, why, portfolio }),
+        body: JSON.stringify({ name, phone, email, role, why, portfolio, resumeUrl }),
       });
-      setStatus(res.ok ? 'success' : 'error');
+      if (!res.ok) throw new Error('Submit failed');
+      setStatus('success');
     } catch {
       setStatus('error');
     }
@@ -90,7 +105,16 @@ function ApplicationForm({ jobs }: { jobs: CareerJob[] }) {
             <label style={lbl}>Why do you want to work at Drivly?</label>
             <textarea style={{ ...inp, height: '82px', padding: '12px 14px', resize: 'none' }} placeholder="Tell us what excites you about this and what you bring to the team" value={why} onChange={e => setWhy(e.target.value)} />
           </div>
-          <div style={fld}><label style={lbl}>LinkedIn or Portfolio (optional)</label><input style={inp} placeholder="emeka@email.com" value={portfolio} onChange={e => setPortfolio(e.target.value)} /></div>
+          <div style={fld}><label style={lbl}>LinkedIn or Portfolio (optional)</label><input style={inp} placeholder="https://linkedin.com/in/emeka" value={portfolio} onChange={e => setPortfolio(e.target.value)} /></div>
+          <div style={fld}>
+            <label style={lbl}>Resume (PDF, DOCX)</label>
+            <input 
+              type="file" 
+              accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" 
+              onChange={e => setResumeFile(e.target.files ? e.target.files[0] : null)} 
+              style={{ ...inp, padding: '10px 14px', height: 'auto', background: '#F7FAF2' }} 
+            />
+          </div>
 
           {status === 'error' && <p style={{ color: '#dc2626', fontSize: '13px', marginBottom: '12px', textAlign: 'center' }}>Something went wrong. Please try again.</p>}
 
