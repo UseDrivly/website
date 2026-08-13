@@ -59,6 +59,7 @@ export async function submitWaitlist(
     const address = (getValue('address') ?? '').trim();
     const company_name = (getValue('company_name') ?? '').trim();
     const fleet_size = (getValue('fleet_size') ?? '').trim();
+    const heard_from = (getValue('heard_from') ?? '').trim();
 
     if (!name || !email || !role) {
       return {
@@ -121,6 +122,7 @@ export async function submitWaitlist(
     if (company_name) payload.company = company_name;
     if (fleet_size) payload.fleet_size = fleet_size;
     if (address) payload.address = address;
+    if (heard_from) payload.heard_from = heard_from;
 
     // Save to appropriate table based on role — all roles go to public.waitlist per schema
     const tableName = 'waitlist';

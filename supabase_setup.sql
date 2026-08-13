@@ -25,13 +25,15 @@ CREATE TABLE IF NOT EXISTS public.waitlist (
   business_type TEXT,
   fleet_size TEXT,
   message TEXT,
+  heard_from TEXT,
 
   created_at TIMESTAMPTZ DEFAULT now() NOT NULL
 );
 
 -- Ensure new columns exist when table already created
 ALTER TABLE public.waitlist
-  ADD COLUMN IF NOT EXISTS address TEXT;
+  ADD COLUMN IF NOT EXISTS address TEXT,
+  ADD COLUMN IF NOT EXISTS heard_from TEXT;
 
 -- Enforce: provider rows must include service_type
 DO $$
@@ -62,12 +64,14 @@ CREATE TABLE IF NOT EXISTS public.career_applications (
   why TEXT,
   portfolio TEXT,
   resume_url TEXT,
+  heard_from TEXT,
   submitted_at TIMESTAMPTZ DEFAULT now() NOT NULL
 );
 
--- Ensure resume_url exists when table already created
+-- Ensure columns exist when table already created
 ALTER TABLE public.career_applications
-  ADD COLUMN IF NOT EXISTS resume_url TEXT;
+  ADD COLUMN IF NOT EXISTS resume_url TEXT,
+  ADD COLUMN IF NOT EXISTS heard_from TEXT;
 
 -- 3. Create Career Jobs Table (for admin-managed job listings)
 CREATE TABLE IF NOT EXISTS public.career_jobs (

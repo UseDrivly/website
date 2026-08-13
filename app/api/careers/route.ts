@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, phone, email, role, why, portfolio, resumeUrl } = body;
+    const { name, phone, email, role, why, portfolio, resumeUrl, heardFrom } = body;
 
     if (!name || !email || !role) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -27,6 +27,7 @@ export async function POST(request: Request) {
       why,
       portfolio,
       resume_url: resumeUrl,
+      heard_from: heardFrom,
       submitted_at: new Date().toISOString(),
     });
 

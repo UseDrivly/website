@@ -107,16 +107,21 @@ function AdminWaitlistContent() {
                   </td>
                   <td className="px-6 py-4 max-w-xs truncate text-xs text-[#4A5E46]">
                     {entry.role === 'driver' && (
-                      <>
+                      <div>
                         City: {entry.city} | Vehicle: {entry.vehicle_type}
-                      </>
+                      </div>
                     )}
                     {entry.role === 'provider' && (
-                      <>Service: {entry.service_type}</>
+                      <div>Service: {entry.service_type}</div>
                     )}
                     {entry.role === 'business' && (
                       <div className="truncate" title={entry.message}>
                         Company: {entry.company} | Type: {entry.business_type} | Fleet: {entry.fleet_size}
+                      </div>
+                    )}
+                    {entry.heard_from && (
+                      <div className="mt-1 text-[#8FA489] font-medium">
+                        Source: {entry.heard_from}
                       </div>
                     )}
                   </td>

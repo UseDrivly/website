@@ -30,6 +30,21 @@ export const driverWaitlistConfig: WaitlistFormConfig = {
         { value: 'other',        label: 'Other' },
       ],
     },
+    {
+      id: 'heard_from',
+      label: 'Where did you hear about us?',
+      type: 'select',
+      required: false,
+      options: [
+        { value: 'LinkedIn', label: 'LinkedIn' },
+        { value: 'Twitter / X', label: 'Twitter / X' },
+        { value: 'Instagram', label: 'Instagram' },
+        { value: 'Facebook', label: 'Facebook' },
+        { value: 'TikTok', label: 'TikTok' },
+        { value: 'Friends and Family', label: 'Friends and Family' },
+        { value: 'Other', label: 'Other' },
+      ],
+    },
   ],
 };
 
@@ -59,6 +74,21 @@ export const providerWaitlistConfig: WaitlistFormConfig = {
         { value: 'multi',       label: 'Multiple services' },
       ],
     },
+    {
+      id: 'heard_from',
+      label: 'Where did you hear about us?',
+      type: 'select',
+      required: false,
+      options: [
+        { value: 'LinkedIn', label: 'LinkedIn' },
+        { value: 'Twitter / X', label: 'Twitter / X' },
+        { value: 'Instagram', label: 'Instagram' },
+        { value: 'Facebook', label: 'Facebook' },
+        { value: 'TikTok', label: 'TikTok' },
+        { value: 'Friends and Family', label: 'Friends and Family' },
+        { value: 'Other', label: 'Other' },
+      ],
+    },
   ],
 };
 
@@ -85,6 +115,21 @@ export const businessWaitlistConfig: WaitlistFormConfig = {
         { value: '200+',   label: '200+ vehicles' },
       ],
     },
+    {
+      id: 'heard_from',
+      label: 'Where did you hear about us?',
+      type: 'select',
+      required: false,
+      options: [
+        { value: 'LinkedIn', label: 'LinkedIn' },
+        { value: 'Twitter / X', label: 'Twitter / X' },
+        { value: 'Instagram', label: 'Instagram' },
+        { value: 'Facebook', label: 'Facebook' },
+        { value: 'TikTok', label: 'TikTok' },
+        { value: 'Friends and Family', label: 'Friends and Family' },
+        { value: 'Other', label: 'Other' },
+      ],
+    },
   ],
 };
 
@@ -98,5 +143,20 @@ export const generalWaitlistConfig: WaitlistFormConfig = {
     { id: 'email', label: 'Email address', type: 'email', placeholder: 'you@example.com',     required: true },
     { id: 'phone', label: 'Phone number',  type: 'tel',   placeholder: '+234 800 000 0000',   required: true },
     { id: 'city',  label: 'City',          type: 'text',  placeholder: 'e.g. Lagos, Abuja',   required: true },
+    {
+      id: 'heard_from',
+      label: 'Where did you hear about us?',
+      type: 'select',
+      required: false,
+      options: [
+        { value: 'LinkedIn', label: 'LinkedIn' },
+        { value: 'Twitter / X', label: 'Twitter / X' },
+        { value: 'Instagram', label: 'Instagram' },
+        { value: 'Facebook', label: 'Facebook' },
+        { value: 'TikTok', label: 'TikTok' },
+        { value: 'Friends and Family', label: 'Friends and Family' },
+        { value: 'Other', label: 'Other' },
+      ],
+    },
   ],
 };

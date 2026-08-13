@@ -77,6 +77,15 @@ export default async function AdminCareers() {
                         </a>
                       </div>
                     )}
+
+                    {app.heard_from && (
+                      <div>
+                        <h4 className="text-xs font-bold uppercase text-[#8FA489] mb-1">Source</h4>
+                        <p className="text-sm text-[#333]">
+                          {app.heard_from}
+                        </p>
+                      </div>
+                    )}
                     
                     {app.resume_url && (
                       <div className="pt-4 border-t border-[#D8E8D0] mt-4">

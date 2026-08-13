@@ -199,6 +199,20 @@ export default function WaitlistTabForm({ id, defaultRole = 'driver' }: Waitlist
               <input name="address" type="text" placeholder="Your workshop or base location" required style={inputStyle} />
             </div>
           )}
+          
+          <div>
+            <FieldLabel text="Where did you hear about us?" />
+            <select name="heard_from" style={{ ...inputStyle, appearance: 'none', cursor: 'pointer' }} defaultValue="">
+              <option value="">Select an option</option>
+              <option value="LinkedIn">LinkedIn</option>
+              <option value="Twitter / X">Twitter / X</option>
+              <option value="Instagram">Instagram</option>
+              <option value="Facebook">Facebook</option>
+              <option value="TikTok">TikTok</option>
+              <option value="Friends and Family">Friends and Family</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
         </div>
 
         <input type="hidden" name="city" value="Lagos" />

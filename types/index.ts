@@ -45,6 +45,7 @@ export interface WaitlistFormData {
   address?: string;
   company_name?: string;
   fleet_size?: string;
+  heard_from?: string;
 }
 
 export interface WaitlistEntry extends WaitlistFormData {

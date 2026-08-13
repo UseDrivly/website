@@ -46,6 +46,7 @@ function ApplicationForm({ jobs }: { jobs: CareerJob[] }) {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('');
+  const [heardFrom, setHeardFrom] = useState('');
   const [why, setWhy] = useState('');
   const [portfolio, setPortfolio] = useState('');
   const [resumeFile, setResumeFile] = useState<File | null>(null);
@@ -71,7 +72,7 @@ function ApplicationForm({ jobs }: { jobs: CareerJob[] }) {
       const res = await fetch('/api/careers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, phone, email, role, why, portfolio, resumeUrl }),
+        body: JSON.stringify({ name, phone, email, role, why, portfolio, resumeUrl, heardFrom }),
       });
       if (!res.ok) throw new Error('Submit failed');
       setStatus('success');
@@ -106,6 +107,21 @@ function ApplicationForm({ jobs }: { jobs: CareerJob[] }) {
             <textarea style={{ ...inp, height: '82px', padding: '12px 14px', resize: 'none' }} placeholder="Tell us what excites you about this and what you bring to the team" value={why} onChange={e => setWhy(e.target.value)} />
           </div>
           <div style={fld}><label style={lbl}>LinkedIn or Portfolio (optional)</label><input style={inp} placeholder="https://linkedin.com/in/emeka" value={portfolio} onChange={e => setPortfolio(e.target.value)} /></div>
+          
+          <div style={fld}>
+            <label htmlFor="career-heard-from" style={lbl}>Where did you hear about us?</label>
+            <select id="career-heard-from" style={{ ...inp, appearance: 'none' }} value={heardFrom} onChange={e => setHeardFrom(e.target.value)}>
+              <option value="">Select an option</option>
+              <option value="LinkedIn">LinkedIn</option>
+              <option value="Twitter / X">Twitter / X</option>
+              <option value="Instagram">Instagram</option>
+              <option value="Facebook">Facebook</option>
+              <option value="TikTok">TikTok</option>
+              <option value="Friends and Family">Friends and Family</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
           <div style={fld}>
             <label style={lbl}>Resume (PDF, DOCX)</label>
             <input 
