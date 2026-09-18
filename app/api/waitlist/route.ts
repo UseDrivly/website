@@ -98,10 +98,13 @@ export async function POST(request: Request) {
       );
     }
 
-    // Dispatch automated welcome email asynchronously (safe & non-blocking)
-    sendWaitlistWelcomeEmail(cleanPayload as any).catch((emailErr) => {
+    // Dispatch automated welcome email to user's registered email
+    try {
+      await sendWaitlistWelcomeEmail(cleanPayload as any);
+    } catch (emailErr) {
       console.error('[waitlist API] Error sending welcome email:', emailErr);
-    });
+    }
+
 
     return NextResponse.json(
       { success: true, message: "Successfully joined the waitlist!" },

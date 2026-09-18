@@ -2,6 +2,7 @@
 
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import type { WaitlistFormData, ActionResponse } from '@/types';
+import { sendWaitlistWelcomeEmail } from '@/lib/email/waitlist-notifications';
 
 /**
  * submitWaitlist — Next.js Server Action
@@ -143,10 +144,29 @@ export async function submitWaitlist(
       };
     }
 
+    // Dispatch automated welcome email to user's registered email
+    try {
+      await sendWaitlistWelcomeEmail({
+        name,
+        email,
+        phone,
+        city,
+        role,
+        vehicle_type: payload.vehicle_type,
+        service_type: payload.service_type,
+        company: payload.company,
+        fleet_size: payload.fleet_size,
+        address: payload.address,
+      });
+    } catch (emailErr) {
+      console.error('[submitWaitlist] Error sending welcome email:', emailErr);
+    }
+
     return {
       success: true,
       message: `You're on the list! We'll reach out before we launch.`,
     };
+
   } catch (err: unknown) {
     console.error('[submitWaitlist] Unexpected error:', err);
     const msg =
