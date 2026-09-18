@@ -50,8 +50,18 @@ function AdminWaitlistContent() {
       <div className="p-6 border-b border-[#D8E8D0]">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
           <h2 className="text-xl font-bold text-[#0D3D21]">Waitlist Entries</h2>
-          <ExportButton data={entries || []} filename={exportFilename} />
+          <div className="flex items-center gap-3">
+            <Link
+              href="/admin/waitlist/emails"
+              className="px-4 py-2 bg-[#7AB800] text-[#0D3D21] rounded-lg text-sm font-bold hover:opacity-90 transition flex items-center gap-2"
+            >
+              <span>✉️</span>
+              <span>Automated Emails</span>
+            </Link>
+            <ExportButton data={entries || []} filename={exportFilename} />
+          </div>
         </div>
+
         
         {/* Tabs */}
         <div className="flex flex-wrap gap-2">

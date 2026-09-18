@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { getSettings, updateSettings } from '@/actions/settings';
 
 export default function AdminSettings() {
@@ -149,6 +150,31 @@ export default function AdminSettings() {
           </form>
         </div>
       </div>
+
+      {/* Automated Emails Card */}
+      <div className="bg-white rounded-2xl border border-[#D8E8D0] shadow-sm overflow-hidden mt-6">
+        <div className="p-6 border-b border-[#D8E8D0] flex justify-between items-center">
+          <div>
+            <h2 className="text-xl font-bold text-[#0D3D21]">Automated Emails</h2>
+            <p className="text-sm text-[#4A5E46] mt-1">
+              Customize automated welcome emails for Drivers, Providers, and Businesses.
+            </p>
+          </div>
+          <Link
+            href="/admin/waitlist/emails"
+            className="px-5 py-2.5 bg-[#0D3D21] text-white hover:bg-[#16502E] rounded-xl text-sm font-bold transition flex items-center gap-2"
+          >
+            <span>✉️</span>
+            <span>Configure Emails &rarr;</span>
+          </Link>
+        </div>
+        <div className="p-6 bg-[#F7FAF2] text-sm text-[#4A5E46]">
+          <p>
+            Connected to <strong>info@usedrivly.com</strong> via <strong>mail.usedrivly.com</strong> (SSL Port 465). Welcome emails are dispatched automatically whenever a user joins the waitlist.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
+

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { sendWaitlistWelcomeEmail } from '@/lib/email/waitlist-notifications';
 
 export async function POST(request: Request) {
   try {
@@ -96,6 +97,11 @@ export async function POST(request: Request) {
         { status: 500 }
       );
     }
+
+    // Dispatch automated welcome email asynchronously (safe & non-blocking)
+    sendWaitlistWelcomeEmail(cleanPayload as any).catch((emailErr) => {
+      console.error('[waitlist API] Error sending welcome email:', emailErr);
+    });
 
     return NextResponse.json(
       { success: true, message: "Successfully joined the waitlist!" },
