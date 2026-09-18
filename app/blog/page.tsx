@@ -4,6 +4,8 @@ import Image from 'next/image';
 import { getPosts } from '@/lib/supabase/posts';
 import type { BlogPost } from '@/types';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Blog - Driving Guides & Industry Insights | Drivly',
   description:

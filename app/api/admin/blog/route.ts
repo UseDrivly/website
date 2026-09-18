@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
+import { revalidatePath } from 'next/cache';
 
 export async function POST(request: Request) {
   try {
@@ -43,6 +44,13 @@ export async function POST(request: Request) {
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
+
+    revalidatePath('/blog');
+    revalidatePath(`/blog/${slug}`);
+    revalidatePath('/');
+    revalidatePath('/fleet');
+    revalidatePath('/providers');
+    revalidatePath('/drivers');
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (err) {
@@ -101,6 +109,13 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
+    revalidatePath('/blog');
+    revalidatePath(`/blog/${slug}`);
+    revalidatePath('/');
+    revalidatePath('/fleet');
+    revalidatePath('/providers');
+    revalidatePath('/drivers');
+
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (err) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
@@ -131,8 +146,15 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
+    revalidatePath('/blog');
+    revalidatePath('/');
+    revalidatePath('/fleet');
+    revalidatePath('/providers');
+    revalidatePath('/drivers');
+
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (err) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
+

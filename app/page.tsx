@@ -22,6 +22,8 @@ const Check = ({ size = 10, color = 'currentColor', strokeWidth = 2.5 }: { size?
   </svg>
 );
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Drivly - Roadside Help. Fixed Price. One Tap Away.',
   description:
